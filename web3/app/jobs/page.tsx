@@ -1,46 +1,9 @@
 import Navbar from "../components/Navbar";
 import JobCard from "./JobCard";
 import Footer from "../components/Footer";
-export default function Jobs() {
-  const jobsData = [
-    {
-      title: "Build a Uber like website",
-      postedDate: "2024-12-10",
-      description: "The project main goal is to create a Uber like website with almost all the relevant features along with other custom features which will be conveyed after.",
-      skills: [{ name: "Skill 1" }, { name: "Skill 2" }, { name: "Skill 3" }, { name: "Skill 4" }]
-    },
-    {
-      title: "Develop a Food Delivery App",
-      postedDate: "2024-11-15",
-      description: "Create a food delivery app with real-time tracking and payment integration.",
-      skills: [{ name: "React" }, { name: "Node.js" }, { name: "MongoDB" }]
-    },
-    {
-      title: "E-commerce Platform",
-      postedDate: "2024-10-20",
-      description: "Build a scalable e-commerce platform with user-friendly UI and secure payment gateway.",
-      skills: [{ name: "JavaScript" }, { name: "AWS" }, { name: "Docker" }]
-    },
-    {
-      title: "Social Media App",
-      postedDate: "2024-09-30",
-      description: "Develop a social media application with features like messaging, notifications, and media sharing.",
-      skills: [{ name: "Flutter" }, { name: "Firebase" }, { name: "GraphQL" }]
-    },
-    {
-      title: "Online Learning Platform",
-      postedDate: "2024-08-25",
-      description: "Create an online learning platform with video streaming and interactive quizzes.",
-      skills: [{ name: "Python" }, { name: "Django" }, { name: "PostgreSQL" }]
-    },
-    {
-      title: "Travel Booking Website",
-      postedDate: "2024-07-10",
-      description: "Build a travel booking website with features like hotel and flight booking.",
-      skills: [{ name: "PHP" }, { name: "Laravel" }, { name: "MySQL" }]
-    }
-  ];
+import jobsData from './jobsData.json'; // Import the JSON data
 
+export default function Jobs() {
   return (
     <div className="min-h-screen" style={{ background: '#1D2C40' }}>
       <Navbar />
