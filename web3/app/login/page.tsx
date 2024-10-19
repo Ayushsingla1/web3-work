@@ -1,8 +1,13 @@
+"use client"
 import Link from 'next/link';
 import Image from 'next/image';
 import { Holtwood_One_SC } from 'next/font/google'
 import { Poppins } from 'next/font/google'
-
+import React, { useContext, useEffect, useState } from 'react';
+import { MyContext } from '@/components/Context';
+import { ChangeEvent } from 'react';
+import { useRouter } from 'next/navigation';
+import toast from 'react-hot-toast';
 const holtwoodOneSC = Holtwood_One_SC({
   weight: '400',
   subsets: ['latin'],
@@ -12,8 +17,75 @@ const poppins = Poppins({
   weight: ['400', '600'],
   subsets: ['latin'],
 })
+interface LoginSchema {
+  email : string,
+  password : string,
+}
+export default function Login() : React.ReactNode {
+  const router = useRouter();
+  const {GoogleAuth,FindUser,SignInWithEmail,GithubAuth} = useContext(MyContext)
 
-export default function Login() {
+  useEffect(()=>{
+    console.log("insider useffect")
+    const fxn = async() => {
+      const res = await FindUser();
+      console.log("response is" , res);
+      if(res){
+        console.log("pushed")
+        router.push('/');
+      }
+    }
+    fxn();
+  },[]);
+
+  const [details,setDetails] = useState<LoginSchema>({
+    email : "",
+    password : ""
+  })
+
+  const changeHandler = (e : ChangeEvent<HTMLInputElement>)=>{
+    const {name,value} : {name : string,value : string} = e.target;
+    return setDetails((prev)=>({
+      ...prev,
+      [name] : value
+    }))
+  }
+
+  const submitHandler = async(e : any) => {
+    e.preventDefault();
+    try{
+      await SignInWithEmail(details.email,details.password);
+      toast.success("LoggedIn Successfully")
+      router.push('/')
+    }
+    catch{
+      toast.error("Unable to logIn")
+    }
+  }
+
+  const GoogleLogin = async()=>{
+    try{
+      await GoogleAuth();
+      toast.success('LoggedIn successfully')
+      router.push('/')
+    }
+    catch{
+      toast.error("Unable to LogIn")
+    }
+  }
+
+  const GithubSignup = async(e : any)=>{
+    e.preventDefault();
+    try{
+      await GithubAuth();
+      toast.success("Account Created Successfully")
+      router.push('/');
+    }
+    catch{
+      toast.error("Error while creating account")
+    }
+  }
+
   return (
     <div className="flex min-h-screen">
       <div className="relative w-3/5">
@@ -27,16 +99,16 @@ export default function Login() {
           <form className="space-y-6 flex-grow mt-8">
             <div className="space-y-6">
               <div>
-                <label htmlFor="username" className={`block text-[18px] font-medium text-[#F3F3F3] ${holtwoodOneSC.className}`}>USERNAME</label>
-                <input type="text" id="username" name="username" className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D7E4F0]" />
+                <label htmlFor="email" className={`block text-[18px] font-medium text-[#F3F3F3] ${holtwoodOneSC.className}`}>EMAIL</label>
+                <input type="email" id="email" name="email" value={details.email} onChange={changeHandler} className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D7E4F0]" />
               </div>
               <div>
                 <label htmlFor="password" className={`block text-[18px] font-medium text-[#F3F3F3] ${holtwoodOneSC.className}`}>PASSWORD</label>
-                <input type="password" id="password" name="password" className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D7E4F0]" />
+                <input type="password" id="password" name="password" value={details.password} onChange={changeHandler} className="w-full px-3 py-2 mt-1 bg-gray-800 border border-gray-600 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 bg-[#D7E4F0]" />
               </div>
             </div>
             <div className="flex justify-center">
-              <button type="submit" className="w-1/3 px-4 py-2 text-black bg-[#D7E4F0] rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-['Hammersmith_One'] text-[18px]">
+              <button type="submit" className="w-1/3 px-4 py-2 text-black bg-[#D7E4F0] rounded-full hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 font-['Hammersmith_One'] text-[18px]" onClick={(e) => submitHandler(e)}>
                 Login
               </button>
             </div>
@@ -46,10 +118,10 @@ export default function Login() {
           </p>
         </div>
         <div className="flex justify-center mt-6 space-x-4">
-          <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center">
+          <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center" onClick={()=>GoogleLogin()}>
             <Image src="/images/google.svg" alt="Google" width={24} height={24} />
           </button>
-          <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center">
+          <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center" onClick={()=>{GithubAuth()}}>
             <Image src="/images/github.svg" alt="GitHub" width={24} height={24} />
           </button>
           <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center">

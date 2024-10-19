@@ -1,11 +1,10 @@
 'use client'
 import React, { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import Font Awesome icons
-
+import Link from 'next/link';
 const Navbar: React.FC = () => {
   // State to toggle mobile menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
   return (
     <nav className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">
       {/* Logo Section */}
@@ -47,7 +46,7 @@ const Navbar: React.FC = () => {
 
       {/* SignUp and Wallet buttons */}
       <div className="flex items-center space-x-2 md:space-x-4 relative top-[-5px] md:top-[-15px]">
-        <a href="#" className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">SignUp</a>
+        <Link href="/login" className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">SignUp</Link>
         <button className="bg-[#3D5473] text-[#BDD9F2] px-2 md:px-4 py-1 md:py-2 rounded hover:bg-gray-600 font-['Hammersmith_One'] text-[18px] md:text-[20px]">
           Connect Wallet
         </button>
