@@ -32,7 +32,7 @@ const Hero = () => {
                 </div>
             </div>
 
-            <div className="bg-[#1D2C40] mt-0 p-6 relative">
+            <div className="bg-[#1D2C40] mt-0 p-6 relative overflow-hidden">
                 <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center justify-between">
                     <div className="lg:w-1/2 mb-8 lg:mb-0">
                         <p className="text-[#BDD9F2] mb-6 text-[26px] font-['Inknut_Antiqua']">
@@ -49,8 +49,26 @@ const Hero = () => {
 
                 </div>
 
-                <div className="flex flex-col lg:flex-row-reverse items-center justify-between min-h-[400px]">
-                    <div className="lg:w-1/2 mb-8 lg:mb-0">
+                <div className="flex flex-col lg:flex-row items-center justify-between min-h-[400px] relative">
+                    <div className="lg:w-1/2 mb-8 lg:mb-0 order-2 lg:order-1">
+                        <div className="relative">
+                            <Image
+                                src="/images/blockchain.png"
+                                alt="Blockchain technology"
+                                width={250}
+                                height={250}
+                                className="rounded-lg mb-4 relative -top-32"
+                            />
+                            <Image
+                                src="/images/jobseeker.png"
+                                alt="Job seeker working"
+                                width={500}
+                                height={400}
+                                className="rounded-lg absolute top-[-100px] left-[50px]"
+                            />
+                        </div>
+                    </div>
+                    <div className="lg:w-1/2 mb-8 lg:mb-0 order-1 lg:order-2">
                         <h2 className="text-[34px] font-['Inknut_Antiqua'] mb-4 text-[#BDD9F2] font-bold">Find a job fit for you now!!</h2>
                         <p className="text-[#BDD9F2] mb-6 text-[26px] font-['Inknut_Antiqua']">
                             Search from wide variety of jobs
@@ -63,15 +81,13 @@ const Hero = () => {
                             </Link>
                         </div>
                     </div>
-                    <div className="lg:w-1/2">
-                        <Image
-                            src="/images/jobseeker.png"
-                            alt="Job seeker working"
-                            width={500}
-                            height={400}
-                            className="rounded-lg"
-                        />
-                    </div>
+                    <Image
+                        src="/images/blockchain.png"
+                        alt="Blockchain technology"
+                        width={250}
+                        height={250}
+                        className="absolute -bottom-20 right-0 lg:-right-24 rounded-lg"
+                    />
                 </div>
             </div>
         </div> 

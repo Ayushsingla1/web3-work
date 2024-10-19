@@ -31,6 +31,7 @@ export default function RootLayout({
       >
          <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Hammersmith+One&display=swap" rel="stylesheet"/> 
          <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Hammersmith+One&family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet"></link>
+         <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua&display=swap" rel="stylesheet"></link> 
         <RecoilSetup>
           {children}
         </RecoilSetup>
