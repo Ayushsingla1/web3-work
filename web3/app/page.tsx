@@ -1,8 +1,14 @@
-
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import InfoCard from './components/InfoCard';
+import Footer from './components/Footer';
 export default function Home() {
   return (
-    <div className="w-screen h-screen bg-black text-white">
-      hello 
+    <div>
+      <Navbar />
+      <Hero />
+      <InfoCard />
+      <Footer />
     </div>
   );
 }
