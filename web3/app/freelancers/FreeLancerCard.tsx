@@ -14,7 +14,7 @@ interface FreelancerCardProps {
 
 const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, photoUrl, postedDate, description, skills }) => {
   return (
-    <div className="bg-transparent rounded-lg p-6 max-w-xl border border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
+    <div className="bg-transparent rounded-lg p-6 min-w-[500px] w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex items-center mb-4">
         <img src={photoUrl} alt={`${name}'s photo`} className="w-12 h-12 rounded-full mr-4" />
         <div>
