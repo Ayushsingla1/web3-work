@@ -1,0 +1,44 @@
+[
+    {
+      "name": "John Doe",
+      "photoUrl": "/images/john_doe.jpg",
+      "postedDate": "2024-12-10",
+      "description": "The project main goal is to create a Uber like website with almost all the relevant features along with other custom features which will be conveyed after.",
+      "skills": [{ "name": "Skill 1" }, { "name": "Skill 2" }, { "name": "Skill 3" }, { "name": "Skill 4" }]
+    },
+    {
+      "name": "Jane Smith",
+      "photoUrl": "/images/jane_smith.jpg",
+      "postedDate": "2024-11-15",
+      "description": "Create a food delivery app with real-time tracking and payment integration.",
+      "skills": [{ "name": "React" }, { "name": "Node.js" }, { "name": "MongoDB" }]
+    },
+    {
+      "name": "Alice Johnson",
+      "photoUrl": "/images/alice_johnson.jpg",
+      "postedDate": "2024-10-20",
+      "description": "Build a scalable e-commerce platform with user-friendly UI and secure payment gateway.",
+      "skills": [{ "name": "JavaScript" }, { "name": "AWS" }, { "name": "Docker" }]
+    },
+    {
+      "name": "Bob Brown",
+      "photoUrl": "/images/bob_brown.jpg",
+      "postedDate": "2024-09-30",
+      "description": "Develop a social media application with features like messaging, notifications, and media sharing.",
+      "skills": [{ "name": "Flutter" }, { "name": "Firebase" }, { "name": "GraphQL" }]
+    },
+    {
+      "name": "Charlie Davis",
+      "photoUrl": "/images/charlie_davis.jpg",
+      "postedDate": "2024-08-25",
+      "description": "Create an online learning platform with video streaming and interactive quizzes.",
+      "skills": [{ "name": "Python" }, { "name": "Django" }, { "name": "PostgreSQL" }]
+    },
+    {
+      "name": "Eve White",
+      "photoUrl": "/images/eve_white.jpg",
+      "postedDate": "2024-07-10",
+      "description": "Build a travel booking website with features like hotel and flight booking.",
+      "skills": [{ "name": "PHP" }, { "name": "Laravel" }, { "name": "MySQL" }]
+    }
+  ]
