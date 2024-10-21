@@ -1,13 +1,24 @@
-'use client'
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import Font Awesome icons
+import Link from 'next/link';
+import MyDropdown from './button';
 
 const Navbar: React.FC = () => {
-  // State to toggle mobile menu
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
+  // Ensure the component only renders on the client
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
-    <nav className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">
+    <div className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">
       {/* Logo Section */}
       <div className="text-3xl md:text-4xl relative top-[-5px] md:top-[-15px] px-2 py-1 rounded">
         <span className="font-['Irish_Grover'] text-[#1D2C40]">Go</span>
@@ -17,11 +28,21 @@ const Navbar: React.FC = () => {
 
       {/* Desktop Links */}
       <div className="hidden md:flex space-x-4">
-        <a href="#" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">home</a>
-        <a href="#" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">Jobs</a>
-        <a href="#" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">freelancers</a>
-        <a href="#" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">post</a>
-        <a href="#" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">requests</a>
+        <Link href="/" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">
+          home
+        </Link>
+        <Link href="/jobs" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">
+          Jobs
+        </Link>
+        <Link href="/freelancers" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">
+          freelancers
+        </Link>
+        <Link href="/post" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">
+          post
+        </Link>
+        <Link href="/requests" className="text-white hover:text-gray-300 pt-3 md:pt-10 font-['Hammersmith_One'] text-[20px] md:text-[23px]">
+          requests
+        </Link>
       </div>
 
       {/* Mobile Menu Button */}
@@ -37,22 +58,31 @@ const Navbar: React.FC = () => {
       {/* Mobile Menu Links (toggle visibility based on isMenuOpen state) */}
       {isMenuOpen && (
         <div className="md:hidden flex flex-col space-y-4 mt-4 w-full">
-          <a href="#" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">home</a>
-          <a href="#" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">Jobs</a>
-          <a href="#" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">freelancers</a>
-          <a href="#" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">post</a>
-          <a href="#" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">requests</a>
+          <Link href="/" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">
+            home
+          </Link>
+          <Link href="/jobs" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">
+            Jobs
+          </Link>
+          <Link href="/freelancers" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">
+            freelancers
+          </Link>
+          <Link href="/post" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">
+            post
+          </Link>
+          <Link href="/requests" className="text-white hover:text-gray-300 pt-2 font-['Hammersmith_One'] text-[20px]">
+            requests
+          </Link>
         </div>
       )}
 
-      {/* SignUp and Wallet buttons */}
       <div className="flex items-center space-x-2 md:space-x-4 relative top-[-5px] md:top-[-15px]">
-        <a href="#" className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">SignUp</a>
-        <button className="bg-[#3D5473] text-[#BDD9F2] px-2 md:px-4 py-1 md:py-2 rounded hover:bg-gray-600 font-['Hammersmith_One'] text-[18px] md:text-[20px]">
-          Connect Wallet
-        </button>
+        <Link href="/login" className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">
+          SignUp
+        </Link>
+        <MyDropdown />
       </div>
-    </nav>
+    </div>
   );
 };
 
