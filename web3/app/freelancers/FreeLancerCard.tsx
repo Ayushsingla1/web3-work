@@ -6,17 +6,18 @@ interface Skill {
 
 interface FreelancerCardProps {
   name: string;
-  photoUrl: string;
-  postedDate: string;
+  image: string;
   description: string;
-  skills: Skill[];
+  skills: string[];
 }
 
-const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, photoUrl, postedDate, description, skills }) => {
+const postedDate = "12/10/2024"
+
+const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, image, description, skills }) => {
   return (
     <div className="bg-transparent rounded-lg p-6 min-w-[500px] w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex items-center mb-4">
-        <img src={photoUrl} alt={`${name}'s photo`} className="w-12 h-12 rounded-full mr-4" />
+        <img src={image} alt={`${name}'s photo`} className="w-12 h-12 rounded-full mr-4" />
         <div>
           <h2 className="text-2xl font-bold text-[#BDD9F2] font-['Hammersmith_One']">{name}</h2>
           <p className="text-[#BDD9F299] text-sm font-['Hammersmith_One']">last active: {postedDate}</p>
@@ -37,7 +38,7 @@ const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, photoUrl, postedD
             {Array.isArray(skills) && skills.length > 0 ? (
               skills.map((skill, index) => (
                 <span key={index} className="bg-[#3D5473] text-[#BDD9F2] px-4 py-1 rounded-md text-sm">
-                  {skill.name}
+                  {skill}
                 </span>
               ))
             ) : (

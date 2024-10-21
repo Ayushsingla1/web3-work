@@ -1,9 +1,39 @@
+'use client'
+
 import Navbar from "../components/Navbar";
 import JobCard from "./JobCard";
 import Footer from "../components/Footer";
 import jobsData from './jobsData.json'; // Import the JSON data
+import { useContext, useEffect, useState } from "react";
+import { MyContext } from "@/components/Context";
+import { title } from "process";
+
+interface WorkProfile {
+  title : string,
+  description : string,
+  amount : number,
+  skills : string[],
+  photoUrl : ""
+}
+
+
 
 export default function Jobs() {
+  const [posts, setPosts] = useState<WorkProfile[]>([{
+    title : "",
+    description : "",
+    amount : 0,
+    skills : [],
+    photoUrl : ""
+  }]);
+
+  const {Getposts} = useContext(MyContext);
+
+  useEffect(() => {
+    Getposts().then((res:WorkProfile[]) => {console.log(res);setPosts(res)})
+  }, [])
+
+
   return (
     <div className="min-h-screen" style={{ background: '#1D2C40' }}>
       <Navbar />
@@ -26,15 +56,18 @@ export default function Jobs() {
           </svg>
         </button>
         <div className="mt-10 grid grid-cols-2 gap-4 justify-items-center">
-          {jobsData.map((job, index) => (
-            <JobCard 
-              key={index}
-              title={job.title}
-              postedDate={job.postedDate}
-              description={job.description}
-              skills={job.skills}
+          {posts?.map((post:WorkProfile, index:number) => {
+            console.log(post);
+            return <JobCard 
+            key={index}  
+            title={post.title}
+            description={post.description}
+            amount={post.amount}
+            skills={post.skills}
+            photoUrl={post.photoUrl}
             />
-          ))}
+            // return <div key={index}></div>;
+          })}
         </div>
       </div>
       <Footer />

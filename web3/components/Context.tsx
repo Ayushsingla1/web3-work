@@ -144,8 +144,24 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
       }
     }
 
+    const GetFreeLancers = async() => {
+      const res : any = []
+      const ref = collection(db,"users")
+      try{
+        const posts = await getDocs(ref);
+        posts.forEach((post)=>{
+          res.push(post.data());
+        })
+        console.log(res);
+        return res;
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+
     return(
-        <MyContext.Provider value={{GoogleAuth,FindUser,CreateUserWithEmail,SignInWithEmail,GithubAuth , GetProfile , UpdateProfile , CreatePost, Getposts}}>
+        <MyContext.Provider value={{GoogleAuth,FindUser,CreateUserWithEmail,SignInWithEmail,GithubAuth , GetProfile , UpdateProfile , CreatePost, Getposts , GetFreeLancers}}>
             {children}
         </MyContext.Provider>
     )
