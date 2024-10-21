@@ -121,7 +121,7 @@ export default function Login() : React.ReactNode {
           <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center" onClick={()=>GoogleLogin()}>
             <Image src="/images/google.svg" alt="Google" width={24} height={24} />
           </button>
-          <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center" onClick={()=>{GithubAuth()}}>
+          <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center" onClick={(e)=>{GithubSignup(e)}}>
             <Image src="/images/github.svg" alt="GitHub" width={24} height={24} />
           </button>
           <button className="p-3 bg-white rounded-full shadow-md hover:shadow-lg transition-shadow duration-300 w-12 h-12 flex items-center justify-center">

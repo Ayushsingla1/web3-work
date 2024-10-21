@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import {ContextProvider} from "@/components/Context";
 import RecoilSetup from "./components/Recoil";
+import Wallet from "@/components/walletConnect";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -32,11 +33,14 @@ export default function RootLayout({
          <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Hammersmith+One&display=swap" rel="stylesheet"/> 
          <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Hammersmith+One&family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet"></link>
          <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua&display=swap" rel="stylesheet"></link>
+         
+         <Wallet>
          <ContextProvider>
           <RecoilSetup>
           {children}
           </RecoilSetup>
           </ContextProvider> 
+         </Wallet>
         
       </body>
     </html>
