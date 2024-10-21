@@ -1,20 +1,16 @@
 "use client"
 import { createContext } from "react";
 import { auth , db } from '../app/firebase'
-import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, updateCurrentUser } from "firebase/auth";
+import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
 import { onAuthStateChanged } from "firebase/auth";
 import { addDoc , collection, doc, query , updateDoc, where} from "firebase/firestore";
 import { getDocs } from "firebase/firestore";
-// interface AuthContextType {
-//     GoogleAuth: () => Promise<void>;
-//     FindUser: () => Promise<boolean>;
-//     CreateUserWithEmail: (email: string, password: string) => Promise<void>;
-//     SignInWithEmail: (email: string, password: string) => Promise<void>;
-//   }
+
   
 export const MyContext = createContext<any>(null);
 export const ContextProvider = ({children} : { children: React.ReactNode }) => {
+
     const GoogleAuth = async() => {
         const provider = new GoogleAuthProvider();
         // return await signInWithPopup(auth,provider);
@@ -119,8 +115,21 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
         console.log(res);
     }
 
+    const CreatePost = async (data : any) =>{
+      console.log(data)
+      console.log(db)
+      const ref = collection(db,'posts')
+      try{
+        const res = await addDoc(ref,data);
+        console.log(res)
+      }
+      catch(e){
+        console.log(e);
+      }
+    }
+
     return(
-        <MyContext.Provider value={{GoogleAuth,FindUser,CreateUserWithEmail,SignInWithEmail,GithubAuth , GetProfile , UpdateProfile}}>
+        <MyContext.Provider value={{GoogleAuth,FindUser,CreateUserWithEmail,SignInWithEmail,GithubAuth , GetProfile , UpdateProfile , CreatePost}}>
             {children}
         </MyContext.Provider>
     )
