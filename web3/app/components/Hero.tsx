@@ -73,7 +73,7 @@ const Hero = () => {
                         <p className="text-[#BDD9F2] mb-6 text-[26px] font-['Inknut_Antiqua']">
                             Search from wide variety of jobs
                             <br />
-                            listed in the "jobs" tabs.
+                            listed in the &ldquo;jobs&rdquo; tabs.
                         </p>
                         <div className="flex justify-start">
                             <Link href="/find-job" className="ml-4 bg-[#3D5473] hover:bg-blue-600 text-[#BDD9F2] font-['Hammersmith_One'] py-2 px-6 rounded text-[28px]">

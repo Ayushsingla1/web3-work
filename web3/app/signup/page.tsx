@@ -5,7 +5,7 @@ import { Holtwood_One_SC } from 'next/font/google'
 import { Poppins } from 'next/font/google'
 import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
-import { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { MyContext } from '@/components/Context';
 import { useContext } from 'react';
 import { useEffect } from 'react';
@@ -26,21 +26,21 @@ interface SignupSchema {
 }
 
 export default function SignUp() : React.ReactNode {
-  const {GoogleAuth,CreateUserWithEmail,FindUser,GithubAuth} = useContext(MyContext)
+  const {googleAuth,createUserWithEmail,findUser,githubAuth} = useContext(MyContext)
   const router = useRouter();
   
   useEffect(()=>{
     console.log("insider useffect")
     const fxn = async() => {
-      const res = await FindUser();
+      const res = await findUser();
       console.log("response is" , res);
       if(res){
         console.log("pushed")
-        router.push('/');
+        router.push('/profile');
       }
     }
     fxn();
-  },[]);
+  },[findUser,router]);
 
   const [details,setDetails] = useState<SignupSchema>({
     name : "",
@@ -58,36 +58,36 @@ export default function SignUp() : React.ReactNode {
     ))
   }
 
-  const submitHandler = async(e : any) => {
+  const submitHandler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try{
-      await CreateUserWithEmail(details.email,details.password);
+      await createUserWithEmail(details.email,details.password);
       toast.success("Account Created Successfully")
-      router.push('/')
+      router.push('/profile')
     }
     catch{
       toast.error("Unable to Create Account")
     }
   }
 
-  const GoogleSignup = async(e : any)=>{
+  const GoogleSignup = async(e : React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
     try{
-      await GoogleAuth();
+      await googleAuth();
       toast.success("Account created Successfully")
-      router.push('/');
+      router.push('/profile');
     }
     catch{
       toast.error("Unable to Create Account")
     }
   }
 
-  const GithubSignup = async(e : any)=>{
+  const GithubSignup = async(e : React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
     try{
-      await GithubAuth();
+      await githubAuth();
       toast.success("Account Created Successfully")
-      router.push('/');
+      router.push('/profile');
     }
     catch{
       toast.error("Error while creating account")

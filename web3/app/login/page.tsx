@@ -23,12 +23,12 @@ interface LoginSchema {
 }
 export default function Login() : React.ReactNode {
   const router = useRouter();
-  const {GoogleAuth,FindUser,SignInWithEmail,GithubAuth} = useContext(MyContext)
+  const {googleAuth,findUser,signInWithEmail,githubAuth} = useContext(MyContext)
 
   useEffect(()=>{
     console.log("insider useffect")
     const fxn = async() => {
-      const res = await FindUser();
+      const res = await findUser();
       console.log("response is" , res);
       if(res){
         console.log("pushed")
@@ -36,7 +36,7 @@ export default function Login() : React.ReactNode {
       }
     }
     fxn();
-  },[]);
+  },[router,findUser]);
 
   const [details,setDetails] = useState<LoginSchema>({
     email : "",
@@ -51,10 +51,10 @@ export default function Login() : React.ReactNode {
     }))
   }
 
-  const submitHandler = async(e : any) => {
+  const submitHandler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     try{
-      await SignInWithEmail(details.email,details.password);
+      await signInWithEmail(details.email,details.password);
       toast.success("LoggedIn Successfully")
       router.push('/')
     }
@@ -65,7 +65,7 @@ export default function Login() : React.ReactNode {
 
   const GoogleLogin = async()=>{
     try{
-      await GoogleAuth();
+      await googleAuth();
       toast.success('LoggedIn successfully')
       router.push('/')
     }
@@ -74,10 +74,10 @@ export default function Login() : React.ReactNode {
     }
   }
 
-  const GithubSignup = async(e : any)=>{
+  const GithubSignup = async(e : React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
     try{
-      await GithubAuth();
+      await githubAuth();
       toast.success("Account Created Successfully")
       router.push('/');
     }
@@ -114,7 +114,7 @@ export default function Login() : React.ReactNode {
             </div>
           </form>
           <p className={`mt-4 text-sm text-center ${poppins.className} text-black`}>
-            Don't have an account? <Link href="/signup" className="text-blue-400 hover:underline font-semibold">Sign Up</Link>
+            Don&apos;t have an account? <Link href="/signup" className="text-blue-400 hover:underline font-semibold">Sign Up</Link>
           </p>
         </div>
         <div className="flex justify-center mt-6 space-x-4">
