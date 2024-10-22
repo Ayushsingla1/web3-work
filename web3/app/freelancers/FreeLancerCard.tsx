@@ -1,5 +1,6 @@
 import React from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 interface FreelancerCardProps {
   name: string;
   image: string;
@@ -9,6 +10,11 @@ interface FreelancerCardProps {
 const postedDate = "12/10/2024"
 
 const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, image, description, skills }) => {
+  const router = useRouter();
+  const seeMoreHandeler = () => {
+    router.push(`/${name.split(" ").join("_")}`);
+  }
+
   return (
     <div className="bg-transparent rounded-lg p-6 w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex items-center mb-4">
@@ -43,7 +49,7 @@ const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, image, descriptio
         </div>
       </div>
       
-      <button className="w-full bg-[#3D5473] hover:bg-[#4D6483] text-[#BDD9F2] font-bold py-2 px-4 rounded mt-4 font-['Hammersmith_One']">
+      <button onClick={seeMoreHandeler} className="w-full bg-[#3D5473] hover:bg-[#4D6483] text-[#BDD9F2] font-bold py-2 px-4 rounded mt-4 font-['Hammersmith_One']">
         See More
       </button>
     </div>

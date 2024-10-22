@@ -119,6 +119,30 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
         }
     }
 
+    const getProfileByUsername = async(username : string) => {
+      const ref = collection(db,'users');
+      const q = query(ref,where('name','==',`${username}`))
+      let items : any = "";
+      try{
+        const data = await getDocs(q)
+      console.log(data.docs[0]?.id)
+      data.forEach((item)=>
+      {
+          console.log(item)
+          items = item
+      }
+      )
+      items = {
+          ...items.data(),
+          id : data.docs[0].id,
+      }
+      console.log(items)
+      return items;
+      }catch(e){
+        console.log(e)
+      }
+  }
+
     const updateProfile = async(id : string,user : any) => {
         const ref = doc(db,"users",id)
         try{
@@ -172,7 +196,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
     }
 
     return(
-        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers}}>
+        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername}}>
             {children}
         </MyContext.Provider>
     )
