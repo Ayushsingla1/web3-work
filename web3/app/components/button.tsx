@@ -8,7 +8,7 @@ const MyDropdown = () => {
     const {connectors,connect} = useConnect();
     const {address} = useAccount();
     const {disconnect} = useDisconnect();
-
+    const metamask = "metamask"
     if(!address){
         return <div className='bg-[#3D5473] rounded-md border-opacity-20 shadow-md'>
         <Dropdown label="Select Wallet" className='border-none'>
@@ -16,7 +16,7 @@ const MyDropdown = () => {
                 connectors.map((connector,index) => (
                     <Dropdown.Item key = {index} onClick={()=>connect({connector})} className='flex items-center justify-between'>
                         <div>{connector.name}</div>
-                        <div><Image src = {`/images/${connector.name}.svg`} alt = "error" width={30} height={30}></Image></div>
+                        <div><Image src = {`/images/${connector.name.toLowerCase()}.svg`} alt = "error" width={30} height={30}></Image></div>
                     </Dropdown.Item>
                 ))
             }
