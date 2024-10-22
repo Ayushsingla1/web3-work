@@ -22,9 +22,9 @@ const ProfilePage = () => {
             if (res === null) {
                 router.push('/');
             } else {
-                const user = await getProfile(res);
-                console.log(user)
-                console.log(user.id)
+                const user = await getProfile(res.email);
+                // console.log(user)
+                // console.log(user.id)
                 setData(user);
                 setIsAuthenticated(true);
             }

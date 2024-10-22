@@ -13,7 +13,8 @@ interface UserProfile {
   resume : string,
   skills : string[],
   work : string[],
-  image : ""
+  image : string,
+  id : string
 }
 
 
@@ -25,7 +26,8 @@ export default function Freelancer() {
     resume: "",
     skills: [],
     work: [],
-    image : ""
+    image : "",
+    id : ""
   }])
   
   const {getFreeLancers} = useContext(MyContext)
@@ -50,7 +52,7 @@ export default function Freelancer() {
                 key={index}
                 name={freelancer.name}
                 image={Pimage}
-                // postedDate={freelancer.postedDate}
+                id = {freelancer.id}
                 description={freelancer.description}
                 skills={freelancer.skills}
               />
