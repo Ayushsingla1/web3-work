@@ -10,7 +10,7 @@ const postedDate = "12/10/2024"
 
 const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, image, description, skills }) => {
   return (
-    <div className="bg-transparent rounded-lg p-6 min-w-[500px] w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
+    <div className="bg-transparent rounded-lg p-6 w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex items-center mb-4">
         <Image src={image} alt={`${name}'s photo`} width = {12} height = {12} className="w-12 h-12 rounded-full mr-4" />
         <div>

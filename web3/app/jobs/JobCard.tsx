@@ -21,7 +21,7 @@ const postedDate = '12/10/2024'
 
 const JobCard: React.FC<WorkProfile> = ({ title, description, skills , photoUrl , amount}) => {
   return (
-    <div className="bg-transparent rounded-lg p-6 max-w-xl border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
+    <div className="bg-transparent rounded-lg p-6 w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex-grow">
         <h2 className="text-2xl font-bold text-[#BDD9F2] mb-2 font-['Hammersmith_One']">{title}</h2>
         <p className="text-[#BDD9F2] text-sm mb-4 font-['Hammersmith_One']">posted on: {postedDate}</p>
