@@ -3,11 +3,14 @@ import { useRecoilState } from "recoil"
 import { postCreation , postCount } from "@/RecoilStore/store"
 import { useContext } from "react"
 import { MyContext } from "@/components/Context"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 const PostSlider = () => {
     const [postData,setPostData] = useRecoilState(postCreation)
     const [val,setval] = useRecoilState(postCount);
     const {createPost} = useContext(MyContext)
-
+    const router = useRouter();
+    const date = new Date();
     const NextClickHandler = ()=>{
         console.log(val)
         console.log("got called")
@@ -38,8 +41,10 @@ const PostSlider = () => {
         console.log(postData)
         console.log("hi there")
         try{
-            const res = await createPost(postData);
+            const res = await createPost({...postData,postDate : `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`});
             console.log(res)
+            toast.success("Posted Successfully")
+            router.push('/jobs')
         }
         catch(e){
             console.log(e)

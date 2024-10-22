@@ -6,16 +6,6 @@ import MyDropdown from './button';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
-
-  // Ensure the component only renders on the client
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
 
   return (
     <div className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">

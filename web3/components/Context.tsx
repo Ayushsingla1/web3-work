@@ -33,6 +33,9 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
                 loyaltyPoints: 0,
                 walletAddress: "",
               });
+              console.log(res.id)
+              const ref = doc(db,"users",res.id);
+              await updateDoc(ref,{id : res.id});
               console.log('New user added to Firestore:', res.id);
             } else {
               console.log('User already exists in Firestore.');
@@ -74,6 +77,8 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
                 loyaltyPoints : 0,
                 walletAddress : "",
             })
+            const reference = doc(db,"users",res.id);
+            await updateDoc(reference,{id : res.id});
             console.log(res);
         });
     }

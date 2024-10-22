@@ -56,7 +56,7 @@ export default function Login() : React.ReactNode {
     try{
       await signInWithEmail(details.email,details.password);
       toast.success("LoggedIn Successfully")
-      router.push('/')
+      router.push('/profile')
     }
     catch{
       toast.error("Unable to logIn")
@@ -67,7 +67,7 @@ export default function Login() : React.ReactNode {
     try{
       await googleAuth();
       toast.success('LoggedIn successfully')
-      router.push('/')
+      router.push('/profile')
     }
     catch{
       toast.error("Unable to LogIn")
@@ -79,7 +79,7 @@ export default function Login() : React.ReactNode {
     try{
       await githubAuth();
       toast.success("Account Created Successfully")
-      router.push('/');
+      router.push('/profile');
     }
     catch{
       toast.error("Error while creating account")
