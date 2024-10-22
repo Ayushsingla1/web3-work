@@ -1,3 +1,4 @@
+"use client"
 import { Dropdown } from 'flowbite-react';
 import { useConnect } from 'wagmi';
 import { useAccount } from 'wagmi';
@@ -22,7 +23,6 @@ const MyDropdown = () => {
         </Dropdown>
 
         </div>
-
     }
     else{
         return (

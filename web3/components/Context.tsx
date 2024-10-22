@@ -8,7 +8,6 @@ import { addDoc , collection, query , where , updateDoc , doc} from "firebase/fi
 import { getDocs } from "firebase/firestore";
   
 export const MyContext = createContext<any>(null);
-
 export const ContextProvider = ({children} : { children: React.ReactNode }) => {
 
     const googleAuth = async() => {
@@ -65,7 +64,15 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
             const ref = collection(db,'users');
             const res =  await addDoc(ref,{
                 email : email,
-                password : password
+                name  : "",
+                skills : [],
+                resume : "",
+                image : "",
+                work : [],
+                description : "",
+                isAvailable : true,
+                loyaltyPoints : 0,
+                walletAddress : "",
             })
             console.log(res);
         });
@@ -90,7 +97,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
 
     const getProfile = async(email : string) => {
         const ref = collection(db,'users');
-        const q = query(ref,where('name','==',`${name}`))
+        const q = query(ref,where('email','==',`${email}`))
         let items : any = "";
         try{
           const data = await getDocs(q)
@@ -101,6 +108,11 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
             items = item
         }
         )
+        items = {
+            ...items.data(),
+            id : data.docs[0].id,
+        }
+        console.log(items)
         return items;
         }catch(e){
           console.log(e)

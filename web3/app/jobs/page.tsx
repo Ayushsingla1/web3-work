@@ -61,6 +61,8 @@ export default function Jobs() {
             title={post.title}
             description={post.description}
             skills={post.skills}
+            photoUrl={post.photoUrl}
+            amount={post.amount}
             />
             // return <div key={index}></div>;
           })}

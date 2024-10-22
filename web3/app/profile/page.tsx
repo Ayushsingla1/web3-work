@@ -12,7 +12,7 @@ const ProfilePage = () => {
     const { findUser, getProfile } = useContext(MyContext);
     const [data, setData] = useRecoilState(profile);
     const [isLoading, setIsLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false); // New state to track authentication
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
     useEffect(() => {
         const fetchData = async () => {
@@ -38,9 +38,8 @@ const ProfilePage = () => {
 
     return (
         <div className="bg-[#1D2C40] h-screen w-screen overflow-hidden">
-            <Navbar/>
+            <Navbar />
             <div className="px-40 mt-10">
-
                 <div className="text-3xl text-[#8BADD9] font-semibold">Profile</div>
                 <div className="flex flex-col gap-y-10">
                     <div className="flex mt-6 gap-x-10">
@@ -85,7 +84,7 @@ const ProfilePage = () => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default ProfilePage
+export default ProfilePage;

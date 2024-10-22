@@ -5,10 +5,21 @@ interface WorkProfile {
   description : string,
   skills : string[],
 }
+interface Skill {
+  name: string;
+}
+
+interface WorkProfile {
+  title : string,
+  description : string,
+  amount : number,
+  skills : string[],
+  photoUrl : ""
+}
 
 const postedDate = '12/10/2024'
 
-const JobCard: React.FC<WorkProfile> = ({ title, description, skills,}) => {
+const JobCard: React.FC<WorkProfile> = ({ title, description, skills , photoUrl , amount}) => {
   return (
     <div className="bg-transparent rounded-lg p-6 max-w-xl border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex-grow">
