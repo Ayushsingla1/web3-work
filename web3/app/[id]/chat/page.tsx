@@ -10,6 +10,8 @@ import DeployContractDropDown from "./DeployContractDropDown";
 import { useAccount } from "wagmi";
 import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
 import { useEthersSigner } from "@/contracts/providerChange";
+import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
 interface UserProfile {
     id: string; 
@@ -52,8 +54,8 @@ export default function User({ params }: { params: { id: string } }) {
     const id = params.id;
     const [myUser, setMyUser] = useState<UserProfile>();
     // const [myUser, setMyUser] = useRecoilState(profile);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const {findUser, getProfile, getProfileByUsername, showContractDropDown,getProfileById} = useContext(MyContext);
+    const [, setIsAuthenticated] = useState(false);
+    const {findUser, getProfile, showContractDropDown,getProfileById} = useContext(MyContext);
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState("");
     const messagesEndRef= useRef<HTMLDivElement>(null);
@@ -77,6 +79,25 @@ export default function User({ params }: { params: { id: string } }) {
                 setIsAuthenticated(true);
                 const conversationId = getConversationId(myProfile.id,res.id);
                 const messagesRef = ref(database, `messages/${conversationId}`);
+
+
+                 // Ensure myUser and user are defined before proceeding
+                 if (myProfile && res) {
+                    // Add data to Firestore
+                    console.log("res is : " , res.id);
+                    const docRef = doc(db, "conversations", conversationId);
+                    const alreadyExists = await getDoc(docRef);
+                    // console.log("chatbox is ; " , res)
+                    if(!alreadyExists){
+                        await setDoc(docRef, {
+                            client: myProfile.id || "unknown", // Fallback to "unknown" if undefined
+                            freelancer: res.id || "unknown",   // Fallback to "unknown" if undefined
+                            contractAddress: "",
+                            id: conversationId
+                        });
+                    }
+                }
+
                 
                 // Clear messages and set up listener
                 setMessages([]); // Clear messages before setting up the listener
