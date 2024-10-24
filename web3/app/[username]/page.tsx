@@ -39,7 +39,7 @@ export default function User({ params }: { params: { username: string } }) {
                 setUser(res);
             }
         )
-    }, [])
+    }, []);
 
     return (
         <div className="bg-[#1D2C40] h-screen w-screen overflow-hidden">

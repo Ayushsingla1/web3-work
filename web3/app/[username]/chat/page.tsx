@@ -11,6 +11,7 @@ import DeployContractDropDown from "./DeployContractDropDown";
 import { useAccount } from "wagmi";
 import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
 import { useEthersSigner } from "@/contracts/providerChange";
+import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
 
 interface UserProfile {
     id: string; // Add this line
@@ -74,6 +75,19 @@ export default function User({ params }: { params: { username: string } }) {
                 const conversationId = getConversationId(myProfile.id, res.id);
                 const messagesRef = ref(database, `messages/${conversationId}`);
                 
+                // Ensure myUser and user are defined before proceeding
+                if (myProfile && res) {
+                    // Add data to Firestore
+                    const firestore = getFirestore();
+                    const docRef = doc(firestore, "conversations", conversationId);
+                    await setDoc(docRef, {
+                        client: myProfile.id || "unknown", // Fallback to "unknown" if undefined
+                        freelancer: res.id || "unknown",   // Fallback to "unknown" if undefined
+                        contractAddress: "",
+                        id: conversationId
+                    });
+                }
+
                 // Clear messages and set up listener
                 setMessages([]); // Clear messages before setting up the listener
                 console.log("Setting up listener for conversationId:", conversationId);
