@@ -27,7 +27,7 @@ const PostSlider = () => {
             }
         }
         getUser();
-    },[])
+    },[findUser,router])
 
     const NextClickHandler = ()=>{
         console.log(val)

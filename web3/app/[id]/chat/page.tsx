@@ -10,7 +10,7 @@ import DeployContractDropDown from "./DeployContractDropDown";
 import { useAccount } from "wagmi";
 import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
 import { useEthersSigner } from "@/contracts/providerChange";
-import { getFirestore, doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 
 interface UserProfile {
@@ -26,7 +26,7 @@ interface UserProfile {
   
 interface Message{
     id: string;
-    text:String
+    text: string
     senderId: string;
     timestamp: string;
 }
@@ -129,7 +129,7 @@ export default function User({ params }: { params: { id: string } }) {
                 unsubscribe();
             }
         };
-    }, [id, findUser, getProfile, router]);
+    }, [id, findUser, getProfile, router,getProfileById]);
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
@@ -201,7 +201,7 @@ export default function User({ params }: { params: { id: string } }) {
                             <div className="flex flex-col gap-y-2">
                                 <div className="flex flex-col w-full">
                                     <label htmlFor="freePubKey" className="text-sm text-white font-['Hammersmith_One']">
-                                        freelancer's Public Address
+                                        freelancer&apos;s Public Address
                                     </label>
                                     <input type="text" id="freePubKey" placeholder="0xHOS8w93jdJw0..." className="text-sm hover:bg-[#4f6f9a] text-white placeholder:text-white bg-[#6581A6] rounded-lg px-1 py-1"/>
                                 </div>

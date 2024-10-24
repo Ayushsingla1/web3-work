@@ -149,7 +149,7 @@ export default function Login(): React.ReactNode {
             </div>
           </form>
           <p className={`mt-4 text-sm text-center ${poppins.className} text-black`}>
-            Don't have an account? <Link href="/signup" className="text-blue-400 hover:underline font-semibold">Sign Up</Link>
+            Don&apos;t have an account? <Link href="/signup" className="text-blue-400 hover:underline font-semibold">Sign Up</Link>
           </p>
         </div>
         <div className="flex justify-center mt-10 space-x-4">

@@ -38,7 +38,7 @@ export default function User({ params }: { params: { id: string } }) {
                 setUser(res);
             }
         )
-    }, [])
+    }, [getProfileById, id])
 
     return (
         <div className="bg-[#1D2C40] h-screen w-screen overflow-hidden">

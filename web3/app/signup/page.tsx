@@ -41,7 +41,7 @@ export default function SignUp(): React.ReactNode {
       }
     };
     fxn();
-  }, []);
+  }, [findUser,router]);
 
   const [details, setDetails] = useState<SignupSchema>({
     name: "",
