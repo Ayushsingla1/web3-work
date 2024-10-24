@@ -155,9 +155,8 @@ export default function User({ params }: { params: { id: string } }) {
     
     const deployContractHandeler = () => {
         console.log('clicked deploy btn')
-        const address = deployEscrow(connectedAccount, signer, '0x567A027B2f96bbf8D47c133e13A54862D565bcd6', 0.002)
+        const address = deployEscrow(connectedAccount, signer, '0x567A027B2f96bbf8D47c133e13A54862D565bcd6', 0.002).then((add) => {alert(`contract deployed at adderss: ${add}`);})
         setEscrowAdress(address);
-        alert(`contract deployed at adderss: ${address}`);
     }
      
     return (
