@@ -6,12 +6,13 @@ import MyDropdown from './button';
 import { useContext } from 'react';
 import { MyContext } from '@/components/Context';
 import { useDisconnect } from 'wagmi';
+import { useRouter } from 'next/navigation';
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isLoggedIn , setIsLoggedIn] = useState(false);
   const { findUser , logOut} = useContext((MyContext))
   const {disconnect} = useDisconnect()
-
+  const router = useRouter();
   useEffect(()=>{
     const user = async() => {
       const res = await findUser()
@@ -25,6 +26,7 @@ const Navbar: React.FC = () => {
     await logOut()
     setIsLoggedIn(false);
     disconnect();
+    router.push('/');
   }
   return (
     <div className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">
