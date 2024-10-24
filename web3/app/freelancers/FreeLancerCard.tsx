@@ -6,13 +6,14 @@ interface FreelancerCardProps {
   image: string;
   description: string;
   skills: string[];
+  id : string
 }
 const postedDate = "12/10/2024"
 
-const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, image, description, skills }) => {
+const FreelancerCard: React.FC<FreelancerCardProps> = ({ name, image, description, skills , id }) => {
   const router = useRouter();
   const seeMoreHandeler = () => {
-    router.push(`/${name.split(" ").join("_")}`);
+    router.push(`/${id}`);
   }
 
   return (

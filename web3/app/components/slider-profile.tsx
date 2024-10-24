@@ -5,11 +5,12 @@ import { count , } from "@/RecoilStore/store"
 import { useContext } from "react"
 import { MyContext } from "@/components/Context"
 import toast from "react-hot-toast"
+import { useRouter } from "next/navigation"
 const SliderProfile = () => {
     const {updateProfile} = useContext(MyContext)
     const [userData,setUserData] = useRecoilState(profileCreation)
     const [data] = useRecoilState(profile)
-
+    const router = useRouter();
     const [val,setval] = useRecoilState(count);
     console.log(data)
     console.log(data.id)
@@ -47,6 +48,7 @@ const SliderProfile = () => {
             await updateProfile(data.id,userData);
             console.log("siuuu ")
             toast.success("Successfully update profile")
+            router.push('/profile');
         }
         catch(e){
             console.log(e);

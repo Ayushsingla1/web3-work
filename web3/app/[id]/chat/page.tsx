@@ -5,15 +5,14 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react"
 import React from "react";
 import { getConversationId, database } from "@/app/firebase";
-import { ref, onValue, onChildAdded, DataSnapshot, push } from "firebase/database";
+import { ref, onChildAdded, DataSnapshot, push } from "firebase/database";
 import DeployContractDropDown from "./DeployContractDropDown";
-// import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useAccount } from "wagmi";
 import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
 import { useEthersSigner } from "@/contracts/providerChange";
 
 interface UserProfile {
-    id: string; // Add this line
+    id: string; 
     name: string,
     description: string,
     resume: string,
@@ -29,13 +28,13 @@ interface Message{
     senderId: string;
     timestamp: string;
 }
-interface ChatProps{
-    user: UserProfile;
-    myUser: UserProfile;
-    conversationId: string;
-    messages: Message[];
-}
-export default function User({ params }: { params: { username: string } }) {
+// interface ChatProps{
+//     user: UserProfile;
+//     myUser: UserProfile;
+//     conversationId: string;
+//     messages: Message[];
+// }
+export default function User({ params }: { params: { id: string } }) {
     const [user, setUser] = useState<UserProfile>({
         id: "",
         name: "",
@@ -50,11 +49,11 @@ export default function User({ params }: { params: { username: string } }) {
     const connectedAccount = useAccount();
     const signer = useEthersSigner({chainId: connectedAccount.chainId});
     const router = useRouter();
-    const userName = params.username.split("_").join(" ");
+    const id = params.id;
     const [myUser, setMyUser] = useState<UserProfile>();
     // const [myUser, setMyUser] = useRecoilState(profile);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const {findUser, getProfile, getProfileByUsername, showContractDropDown} = useContext(MyContext);
+    const {findUser, getProfile, getProfileByUsername, showContractDropDown,getProfileById} = useContext(MyContext);
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState("");
     const messagesEndRef= useRef<HTMLDivElement>(null);
@@ -62,16 +61,21 @@ export default function User({ params }: { params: { username: string } }) {
         let unsubscribe: (() => void) | undefined;
 
         const setupListener = async () => {
-            const res = await getProfileByUsername(userName);
+            const res = await getProfileById(id);
             setUser(res);
             const userRes = await findUser();
+            console.log("printing myself")
+            console.log(userRes.email)
             if (userRes === null) {
                 router.push('/');
             } else {
-                const myProfile = await getProfile(userRes);
+                const myProfile = await getProfile(userRes.email);
                 setMyUser(myProfile);
+
+                console.log("printing my profile")
+                console.log(myProfile)
                 setIsAuthenticated(true);
-                const conversationId = getConversationId(myProfile.id, res.id);
+                const conversationId = getConversationId(myProfile.id,res.id);
                 const messagesRef = ref(database, `messages/${conversationId}`);
                 
                 // Clear messages and set up listener
@@ -104,7 +108,7 @@ export default function User({ params }: { params: { username: string } }) {
                 unsubscribe();
             }
         };
-    }, [userName, findUser, getProfile, router]);
+    }, [id, findUser, getProfile, router]);
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
