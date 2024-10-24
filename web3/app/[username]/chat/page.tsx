@@ -7,6 +7,10 @@ import React from "react";
 import { getConversationId, database } from "@/app/firebase";
 import { ref, onValue, onChildAdded, DataSnapshot, push } from "firebase/database";
 import DeployContractDropDown from "./DeployContractDropDown";
+// import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
+import { useAccount } from "wagmi";
+import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
+import { useEthersSigner } from "@/contracts/providerChange";
 
 interface UserProfile {
     id: string; // Add this line
@@ -42,6 +46,9 @@ export default function User({ params }: { params: { username: string } }) {
         image : "",
         isAvailable: false
       })
+    const {setEscrowAdress} = useContext(MyContext);
+    const connectedAccount = useAccount();
+    const signer = useEthersSigner({chainId: connectedAccount.chainId});
     const router = useRouter();
     const userName = params.username.split("_").join(" ");
     const [myUser, setMyUser] = useState<UserProfile>();
@@ -61,7 +68,7 @@ export default function User({ params }: { params: { username: string } }) {
             if (userRes === null) {
                 router.push('/');
             } else {
-                const myProfile = await getProfile<UserProfile>(userRes);
+                const myProfile = await getProfile(userRes);
                 setMyUser(myProfile);
                 setIsAuthenticated(true);
                 const conversationId = getConversationId(myProfile.id, res.id);
@@ -101,7 +108,13 @@ export default function User({ params }: { params: { username: string } }) {
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
-      const handleSubmit = (e: React.FormEvent) => {
+
+
+    useEffect(() => {
+        console.log("connected account", connectedAccount);
+    }, [connectedAccount])
+    
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         if (message.trim() && user && myUser) {
             const conversationId = getConversationId(myUser.id, user.id);
@@ -115,6 +128,13 @@ export default function User({ params }: { params: { username: string } }) {
         }
     };
     
+    const deployContractHandeler = () => {
+        console.log('clicked deploy btn')
+        const address = deployEscrow(connectedAccount, signer, '0x567A027B2f96bbf8D47c133e13A54862D565bcd6', 0.002)
+        setEscrowAdress(address);
+        alert(`contract deployed at adderss: ${address}`);
+    }
+     
     return (
         <div className="bg-[#1D2C40] flex min-h-screen gap-y-10 flex-col h-screen w-screen overflow-hidden">
             <Navbar />
@@ -166,7 +186,7 @@ export default function User({ params }: { params: { username: string } }) {
                                     </label>
                                     <input type="number" id="amount" placeholder="0.2" className="text-sm hover:bg-[#4f6f9a] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 text-white placeholder:text-white bg-[#6581A6] rounded-lg px-1 py-1"/>
                                 </div>
-                                <button className="text-lg px-2 py-1 bg-[#6581A6] rounded-lg hover:bg-[#4f6f9a] active:bg-[#304969]">Deploy</button>
+                                <button className="text-lg px-2 py-1 bg-[#6581A6] rounded-lg hover:bg-[#4f6f9a] active:bg-[#304969]" onClick={deployContractHandeler}>Deploy</button>
                             </div>
                         </div>
                     </div>

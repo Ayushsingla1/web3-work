@@ -12,6 +12,7 @@ export const MyContext = createContext<any>(null);
 export const ContextProvider = ({children} : { children: React.ReactNode }) => {
 
   const [showContractDropDown, setShowContractDropDown] = useState<boolean>(false);
+  const [escrowAddress, setEscrowAdress] = useState<string>("");
 
     const googleAuth = async() => {
         const provider = new GoogleAuthProvider();
@@ -199,7 +200,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
     }
 
     return(
-        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername, showContractDropDown, setShowContractDropDown}}>
+        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername, showContractDropDown, setShowContractDropDown, escrowAddress, setEscrowAdress}}>
             {children}
         </MyContext.Provider>
     )

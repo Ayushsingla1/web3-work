@@ -4,7 +4,7 @@ import { mainnet , sepolia } from "wagmi/chains";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-const config = createConfig({
+export const config = createConfig({
     chains : [mainnet,sepolia],
     connectors : [
     ],
