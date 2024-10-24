@@ -59,6 +59,7 @@ export default function User({ params }: { params: { id: string } }) {
                                 <div className="text-2xl font-semibold text-[#BDD9F2]">{user?.name || 'Name not available'}</div>
                                 <button
                                     className={`min-w-36 px-3 h-10 py-1 rounded-sm text-[#1D2C40] text-2xl font-bold ${user?.isAvailable ? 'bg-[#BDD9F2] hover:scale-105' : 'bg-[#8BADD9]'}`}
+                                    onClick={() => router.push(`/${params.username}/chat`)}
                                 >
                                     start a conversation
                                 </button>

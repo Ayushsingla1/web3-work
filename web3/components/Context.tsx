@@ -1,5 +1,5 @@
 "use client"
-import { createContext } from "react";
+import { createContext, useState } from "react";
 import { auth , db } from '../app/firebase'
 import { createUserWithEmailAndPassword, GithubAuthProvider, GoogleAuthProvider, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { signInWithPopup } from "firebase/auth";
@@ -10,9 +10,12 @@ import { storage } from "../app/firebase";
 import { uploadBytes , ref , getDownloadURL} from "firebase/storage";
   
 export const MyContext = createContext<any>(null);
+
 export const ContextProvider = ({children} : { children: React.ReactNode }) => {
 
-  const googleAuth = async() => {
+  const [showContractDropDown, setShowContractDropDown] = useState<boolean>(false);
+
+    const googleAuth = async() => {
         const provider = new GoogleAuthProvider();
         try {
             const result = await signInWithPopup(auth, provider);
@@ -220,7 +223,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
   }
 
     return(
-        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername,logOut,getProfileById}}>
+        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername, showContractDropDown, setShowContractDropDown}}>
             {children}
         </MyContext.Provider>
     )
