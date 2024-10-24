@@ -41,7 +41,7 @@ const Hero = () => {
                             technology...
                         </p>
                         <div className="w-full flex justify-start mb-8">
-                            <Link href="/find-freelancer" className="ml-12 bg-[#3D5473] hover:bg-blue-600 text-[#BDD9F2] text-[28px] py-2 px-4 rounded inline-block font-['Hammersmith_One']">
+                            <Link href="/freelancers" className="ml-12 bg-[#3D5473] hover:bg-blue-600 text-[#BDD9F2] text-[28px] py-2 px-4 rounded inline-block font-['Hammersmith_One']">
                                 find a freelancer
                             </Link>
                         </div>
@@ -76,7 +76,7 @@ const Hero = () => {
                             listed in the &ldquo;jobs&rdquo; tabs.
                         </p>
                         <div className="flex justify-start">
-                            <Link href="/find-job" className="ml-4 bg-[#3D5473] hover:bg-blue-600 text-[#BDD9F2] font-['Hammersmith_One'] py-2 px-6 rounded text-[28px]">
+                            <Link href="/jobs" className="ml-4 bg-[#3D5473] hover:bg-blue-600 text-[#BDD9F2] font-['Hammersmith_One'] py-2 px-6 rounded text-[28px]">
                                 find a job
                             </Link>
                         </div>

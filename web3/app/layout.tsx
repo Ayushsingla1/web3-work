@@ -4,6 +4,7 @@ import "./globals.css";
 import {ContextProvider} from "@/components/Context";
 import RecoilSetup from "./components/Recoil";
 import Wallet from "@/components/walletConnect";
+import { Toaster } from "react-hot-toast";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -37,6 +38,7 @@ export default function RootLayout({
          <Wallet>
          <ContextProvider>
           <RecoilSetup>
+            <Toaster position="top-right"/>
           {children}
           </RecoilSetup>
           </ContextProvider> 
