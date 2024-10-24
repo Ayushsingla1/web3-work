@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 "use client"
 import Link from 'next/link';
 import Image from 'next/image';
@@ -10,19 +9,6 @@ import React, { ChangeEvent, useState } from 'react';
 import { MyContext } from '@/components/Context';
 import { useContext } from 'react';
 import { useEffect } from 'react';
-=======
-"use client";
-import Link from "next/link";
-import Image from "next/image";
-import { Holtwood_One_SC } from "next/font/google";
-import { Poppins } from "next/font/google";
-import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
-import { ChangeEvent, useState } from "react";
-import { MyContext } from "@/components/Context";
-import { useContext } from "react";
-import { useEffect } from "react";
->>>>>>> Stashed changes
 const holtwoodOneSC = Holtwood_One_SC({
   weight: "400",
   subsets: ["latin"],
@@ -39,34 +25,15 @@ interface SignupSchema {
   password: string;
 }
 
-<<<<<<< Updated upstream
-export default function SignUp() : React.ReactNode {
-  const {googleAuth,createUserWithEmail,findUser,githubAuth} = useContext(MyContext)
-  const router = useRouter();
-  
-  useEffect(()=>{
-    console.log("insider useffect")
-    const fxn = async() => {
-      const res = await findUser();
-      console.log("response is" , res);
-      if(res){
-        console.log("pushed")
-        router.push('/profile');
-      }
-    }
-    fxn();
-  },[findUser,router]);
-=======
 export default function SignUp(): React.ReactNode {
-  const { GoogleAuth, CreateUserWithEmail, FindUser, GithubAuth } =
+  const { googleAuth, CreateUserWithEmail, findUser, githubAuth } =
     useContext(MyContext);
   const router = useRouter();
->>>>>>> Stashed changes
 
   useEffect(() => {
     console.log("insider useffect");
     const fxn = async () => {
-      const res = await FindUser();
+      const res = await findUser();
       console.log("response is", res);
       if (res) {
         console.log("pushed");
@@ -90,14 +57,6 @@ export default function SignUp(): React.ReactNode {
     }));
   };
 
-<<<<<<< Updated upstream
-  const submitHandler = async(e : React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    try{
-      await createUserWithEmail(details.email,details.password);
-      toast.success("Account Created Successfully")
-      router.push('/profile')
-=======
   const submitHandler = async (e: any) => {
     e.preventDefault();
     try {
@@ -106,47 +65,30 @@ export default function SignUp(): React.ReactNode {
       router.push("/");
     } catch {
       toast.error("Unable to Create Account");
->>>>>>> Stashed changes
     }
   };
 
-<<<<<<< Updated upstream
   const GoogleSignup = async(e : React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
     try{
       await googleAuth();
       toast.success("Account created Successfully")
       router.push('/profile');
-=======
-  const GoogleSignup = async (e: any) => {
-    e.preventDefault();
-    try {
-      await GoogleAuth();
-      toast.success("Account created Successfully");
-      router.push("/");
-    } catch {
-      toast.error("Unable to Create Account");
->>>>>>> Stashed changes
+    }
+    catch(e){
+      console.log("error while google auth: ", e);
     }
   };
 
-<<<<<<< Updated upstream
   const GithubSignup = async(e : React.MouseEvent<HTMLButtonElement>)=>{
     e.preventDefault();
     try{
       await githubAuth();
       toast.success("Account Created Successfully")
       router.push('/profile');
-=======
-  const GithubSignup = async (e: any) => {
-    e.preventDefault();
-    try {
-      await GithubAuth();
-      toast.success("Account Created Successfully");
-      router.push("/");
-    } catch {
-      toast.error("Error while creating account");
->>>>>>> Stashed changes
+    }
+    catch(e){
+      console.log("error while github auth: ", e);
     }
   };
 

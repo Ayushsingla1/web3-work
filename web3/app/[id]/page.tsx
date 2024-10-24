@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react"
-import { constSelector } from "recoil";
 
 interface UserProfile {
     name : string,
@@ -18,7 +17,7 @@ interface UserProfile {
   }
   
 
-export default function User({ params }: { params: { username: string } }) {
+export default function User({ params }: { params: { id: string } }) {
     const [user, setUser] = useState<UserProfile>({
         name: "",
         description: "",
@@ -29,11 +28,11 @@ export default function User({ params }: { params: { username: string } }) {
         isAvailable: false
       })
     const router = useRouter()
-    const {getProfileByUsername} = useContext(MyContext);
-    const userName = params.username.split("_").join(" ");
+    const {getProfileById} = useContext(MyContext);
+    const id = params.id;
 
     useEffect(() => {
-        getProfileByUsername(userName).then(
+        getProfileById(id).then(
             (res: any) => {
                 console.log(res)
                 setUser(res);

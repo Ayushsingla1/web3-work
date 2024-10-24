@@ -1,12 +1,33 @@
 "use client"
 import { useRecoilState } from "recoil"
 import { postCreation , postCount } from "@/RecoilStore/store"
-import { useContext } from "react"
+import { useContext, useEffect, useState } from "react"
 import { MyContext } from "@/components/Context"
+import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
 const PostSlider = () => {
     const [postData,setPostData] = useRecoilState(postCreation)
     const [val,setval] = useRecoilState(postCount);
-    const {createPost} = useContext(MyContext)
+    const {createPost , findUser} = useContext(MyContext)
+    const [userData,setUserData] = useState<any>(null);
+    const router = useRouter();
+    const date = new Date();
+
+    useEffect(()=>{
+        const getUser = async() => {
+            const res = await findUser();
+            console.log(res);
+            console.log(res.uid , res.displayName , res.email)
+            if(res){
+                setUserData({id : res.uid , name : res.displayName , email : res.email})
+            }
+            else {
+                router.push('/login')
+                return;
+            }
+        }
+        getUser();
+    },[])
 
     const NextClickHandler = ()=>{
         console.log(val)
@@ -20,10 +41,13 @@ const PostSlider = () => {
 
     const changeHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
         const {name} = e.target
-        let {value} : {value : string | string[]} = e.target;
+        let value : string | string[] | File = e.target.value;
         console.log("name is : ",name , "value is : ",value)
         if(name === "skills"){
             value = value.trim().split(',');
+        }
+        if(name === "photoUrl" && e.target.files){
+            value = e.target.files[0];
         }
         setPostData((prev) => (
             {
@@ -36,10 +60,13 @@ const PostSlider = () => {
     const submitHandler = async(e : React.MouseEvent<HTMLButtonElement>)=>{
         e.preventDefault();
         console.log(postData)
+        console.log(userData)
         console.log("hi there")
         try{
-            const res = await createPost(postData);
+            const res = await createPost({...postData,postDate : `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`, uid : userData.id, name : userData.name, email : userData.email });
             console.log(res)
+            toast.success("Posted Successfully")
+            // router.push('/jobs')
         }
         catch(e){
             console.log(e)
@@ -50,7 +77,7 @@ const PostSlider = () => {
     if(val === 0){
         return <div className="bg-[#8BADD9] flex flex-col gap-y-2 w-[50%] px-20 py-20 rounded-md">
             <div className="text-black font-semibold text-2xl">Choose a title for your work</div>
-            <input placeholder="username..." name = "title" value = {postData.title} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
+            <input type = "text" placeholder="username..." name = "title" value = {postData.title} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
             <div className="text-[#1D2C40] font-semibold opacity-80">give you project a title that will catch the attentions of 
             the best freelancers on the platform . Remember to make it short, concise and to the point</div>
 
@@ -63,7 +90,7 @@ const PostSlider = () => {
     else if(val === 1){
         return <div className="bg-[#8BADD9] flex flex-col gap-y-2 w-[50%] px-20 py-20 rounded-md">
             <div className="text-black font-semibold text-2xl">A detailed description of your work</div>
-            <input placeholder="description..." name = "description" value = {postData.description} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
+            <input type = "text" placeholder="description..." name = "description" value = {postData.description} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
             <div className="text-[#1D2C40] font-semibold opacity-80">Remember to make it short, concise and to the point</div>
 
             <div className="flex self-end mt-10 px-3 py-1  font-bold text-black rounded-md items-center gap-x-2">
@@ -88,7 +115,22 @@ const PostSlider = () => {
     else if(val === 3){
         return <div className="bg-[#8BADD9] flex flex-col gap-y-2 w-[50%] px-20 py-20 rounded-md">
             <div className="text-black font-semibold text-2xl">Basic Skills required for the job</div>
-            <input placeholder="Skills..." name = "skills" value = {postData.skills.join(',')} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
+            <input type = "text" placeholder="Skills..." name = "skills" value = {postData.skills.join(',')} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
+            <div className="text-[#1D2C40] font-semibold opacity-80">Specify the basic skill the freelancer might need for 
+            applying to the job.</div>
+            <div className="flex self-end mt-10 px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md items-center">
+            {/* <button onClick={(e)=> submitHandler(e)} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Submit</button>  */}
+            <div className="flex self-end mt-10 px-3 py-1  font-bold text-black rounded-md items-center gap-x-2">
+            <button onClick={()=>PrevClickHandler()} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Prev</button>
+            <button onClick={()=>{{NextClickHandler()}}} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Next</button>
+            </div>
+            </div>
+        </div>
+    }
+    else if(val === 4){
+        return <div className="bg-[#8BADD9] flex flex-col gap-y-2 w-[50%] h-[40%] px-20 py-20 rounded-md">
+            <div className="text-black font-semibold text-2xl">Basic Skills required for the job</div>
+            <input type = "file" placeholder="Uplaod A Image" name = "photoUrl" onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
             <div className="text-[#1D2C40] font-semibold opacity-80">Specify the basic skill the freelancer might need for 
             applying to the job.</div>
             <div className="flex self-end mt-10 px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md items-center">
@@ -96,17 +138,6 @@ const PostSlider = () => {
             </div>
         </div>
     }
-    // else if(val === 4){
-    //     return <div className="bg-[#8BADD9] flex flex-col gap-y-2 w-[50%] h-[40%] px-20 py-20 rounded-md">
-    //         <div className="text-black font-semibold text-2xl">Basic Skills required for the job</div>
-    //         <input placeholder="Skills..." name = "skills" value = {postData.skills.join(',')} onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
-    //         <div className="text-[#1D2C40] font-semibold opacity-80">Specify the basic skill the freelancer might need for 
-    //         applying to the job.</div>
-    //         <div className="flex self-end mt-10 px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md items-center">
-    //         <button onClick={(e)=> submitHandler(e)} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Submit</button> 
-    //         </div>
-    //     </div>
-    // }
 
 }
 

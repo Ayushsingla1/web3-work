@@ -43,7 +43,7 @@ const JobCard: React.FC<WorkProfile> = ({ title, description, skills , photoUrl 
       </div>
       
       <button className="w-full bg-[#3D5473] hover:bg-[#4D6483] text-[#BDD9F2] font-bold py-2 px-4 rounded font-['Hammersmith_One']">
-        See More
+        Apply
       </button>
     </div>
   );
