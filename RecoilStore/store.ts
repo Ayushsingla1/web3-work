@@ -1,5 +1,14 @@
 import { atom } from "recoil";
 
+export interface freelancerProfile {
+    name : string,
+    description : string,
+    resume : string,
+    skills : string[],
+    work : string[],
+    image : string,
+    id : string
+}
 
 interface userProfile {
     name : string,
@@ -53,4 +62,14 @@ export const count = atom({
 export const postCount = atom({
     key : "postCount",
     default : 0 as number
+})
+
+export const freelancersArray = atom({
+    key: "freelancersArray",
+    default: [] as freelancerProfile[]
+})
+
+export const skillToSearch = atom({
+    key: "skillToSearch",
+    default: [] as string[]
 })

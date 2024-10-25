@@ -29,7 +29,7 @@ const Navbar: React.FC = () => {
     router.push('/');
   }
   return (
-    <div className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">
+    <div className="bg-[#6581A6] w-full p-4 md:p-6 flex flex-wrap justify-between items-center">
       {/* Logo Section */}
       <div className="text-3xl md:text-4xl relative top-[-5px] md:top-[-15px] px-2 py-1 rounded">
         <span className="font-['Irish_Grover'] text-[#1D2C40]">Go</span>
