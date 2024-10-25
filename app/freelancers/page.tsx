@@ -6,6 +6,9 @@ import FreelanceFilter from "./FreelancFilter";
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "@/components/Context";
 import Pimage from '../../public/images/phantom.svg'
+import { useRecoilState, useRecoilValue } from "recoil";
+import { freelancersArray, skillToSearch } from "@/RecoilStore/store";
+import { searchFilterFreelancers } from "@/RecoilStore/fiters";
 
 interface UserProfile {
   name : string,
@@ -20,15 +23,11 @@ interface UserProfile {
 
 export default function Freelancer() {
 
-  const [freelancers, setFreelancers] = useState<UserProfile[]>([{
-    name: "",
-    description: "",
-    resume: "",
-    skills: [],
-    work: [],
-    image : "",
-    id : ""
-  }])
+  const [allFreelancers, setAllFreelancers] = useRecoilState(freelancersArray)
+  const filteredFreelancers = useRecoilValue(searchFilterFreelancers);
+  const [freelancers, setFreelancers] = useState<UserProfile[]>();
+  const [loading, setLoading] = useState<boolean>(true)
+
   
   const {getFreeLancers} = useContext(MyContext)
 
@@ -36,18 +35,28 @@ export default function Freelancer() {
     getFreeLancers().then((res:UserProfile[]) => {
       console.log(res);
       setFreelancers(res);
+      setAllFreelancers(res);
+      setLoading(false);
     })
   }, [getFreeLancers])
 
+  useEffect(() => {
+    if(!filteredFreelancers && allFreelancers.length !== 0){
+      setFreelancers(allFreelancers);
+      return
+    }
+    setFreelancers(filteredFreelancers);
+  }, [filteredFreelancers])
+
   return (
-    <div className="min-h-screen" style={{ background: '#1D2C40' }}>
+    <div className="min-h-screen flex flex-col justify-between items-center w-full" style={{ background: '#1D2C40' }}>
       <Navbar />
       <div className="flex justify-center items-center w-full">
         <div className="mt-8 w-10/12 max-w-[1535px] pb-80">
           <h1 className="font-bold mb-6 text-[#BDD9F2] font-['Hammersmith_One'] text-[50px]">Find Freelancers</h1>
           <FreelanceFilter/>
           <div className="mt-10 flex flex-wrap gap-4 justify-items-center">
-            {freelancers?.map((freelancer, index) => (
+            {freelancers? freelancers.map((freelancer, index) => (
               <FreelancerCard 
                 key={index}
                 name={freelancer.name}
@@ -55,8 +64,16 @@ export default function Freelancer() {
                 id = {freelancer.id}
                 description={freelancer.description}
                 skills={freelancer.skills}
-              />
-            ))}
+              />)):
+              (
+                <>
+                {
+                  loading? (<div className="w-full justify-center flex items-center text-white text-xl uppercase">Loading...</div>)
+                  : (<div className="w-full justify-center flex items-center text-white text-xl uppercase">No Freelancers found...</div>)
+                }
+                </>
+              )
+            }
           </div>
         </div>
       </div>
