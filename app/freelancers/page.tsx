@@ -7,7 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { MyContext } from "@/components/Context";
 import Pimage from '../../public/images/phantom.svg'
 import { useRecoilState, useRecoilValue } from "recoil";
-import { freelancersArray, skillToSearch } from "@/RecoilStore/store";
+import { freelancersArray} from "@/RecoilStore/store";
 import { searchFilterFreelancers } from "@/RecoilStore/fiters";
 
 interface UserProfile {
@@ -38,7 +38,7 @@ export default function Freelancer() {
       setAllFreelancers(res);
       setLoading(false);
     })
-  }, [getFreeLancers])
+  }, [getFreeLancers, setAllFreelancers, setFreelancers])
 
   useEffect(() => {
     if(!filteredFreelancers && allFreelancers.length !== 0){
@@ -46,7 +46,7 @@ export default function Freelancer() {
       return
     }
     setFreelancers(filteredFreelancers);
-  }, [filteredFreelancers])
+  }, [filteredFreelancers, allFreelancers])
 
   return (
     <div className="min-h-screen flex flex-col justify-between items-center w-full" style={{ background: '#1D2C40' }}>
