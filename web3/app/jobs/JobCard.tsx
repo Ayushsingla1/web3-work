@@ -5,9 +5,6 @@ interface WorkProfile {
   description : string,
   skills : string[],
 }
-interface Skill {
-  name: string;
-}
 
 interface WorkProfile {
   title : string,
@@ -19,7 +16,7 @@ interface WorkProfile {
 
 const postedDate = '12/10/2024'
 
-const JobCard: React.FC<WorkProfile> = ({ title, description, skills , photoUrl , amount}) => {
+const JobCard: React.FC<WorkProfile> = ({ title, description, skills }) => {
   return (
     <div className="bg-transparent rounded-lg p-6 w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex-grow">
@@ -43,7 +40,7 @@ const JobCard: React.FC<WorkProfile> = ({ title, description, skills , photoUrl 
       </div>
       
       <button className="w-full bg-[#3D5473] hover:bg-[#4D6483] text-[#BDD9F2] font-bold py-2 px-4 rounded font-['Hammersmith_One']">
-        See More
+        Apply
       </button>
     </div>
   );

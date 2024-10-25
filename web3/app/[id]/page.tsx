@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react"
-import { constSelector } from "recoil";
 
 interface UserProfile {
     name : string,
@@ -18,7 +17,7 @@ interface UserProfile {
   }
   
 
-export default function User({ params }: { params: { username: string } }) {
+export default function User({ params }: { params: { id: string } }) {
     const [user, setUser] = useState<UserProfile>({
         name: "",
         description: "",
@@ -29,17 +28,17 @@ export default function User({ params }: { params: { username: string } }) {
         isAvailable: false
       })
     const router = useRouter()
-    const {getProfileByUsername} = useContext(MyContext);
-    const userName = params.username.split("_").join(" ");
+    const {getProfileById} = useContext(MyContext);
+    const id = params.id;
 
     useEffect(() => {
-        getProfileByUsername(userName).then(
+        getProfileById(id).then(
             (res: any) => {
                 console.log(res)
                 setUser(res);
             }
         )
-    }, []);
+    }, [getProfileById, id])
 
     return (
         <div className="bg-[#1D2C40] h-screen w-screen overflow-hidden">
@@ -60,7 +59,7 @@ export default function User({ params }: { params: { username: string } }) {
                                 <div className="text-2xl font-semibold text-[#BDD9F2]">{user?.name || 'Name not available'}</div>
                                 <button
                                     className={`min-w-36 px-3 h-10 py-1 rounded-sm text-[#1D2C40] text-2xl font-bold ${user?.isAvailable ? 'bg-[#BDD9F2] hover:scale-105' : 'bg-[#8BADD9]'}`}
-                                    onClick={() => router.push(`/${params.username}/chat`)}
+                                    onClick={() => router.push(`/${params.id}/chat`)}
                                 >
                                     start a conversation
                                 </button>

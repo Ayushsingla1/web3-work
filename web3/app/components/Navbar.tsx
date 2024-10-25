@@ -3,20 +3,31 @@ import React, { useState, useEffect } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa'; // Import Font Awesome icons
 import Link from 'next/link';
 import MyDropdown from './button';
-
+import { useContext } from 'react';
+import { MyContext } from '@/components/Context';
+import { useDisconnect } from 'wagmi';
+import { useRouter } from 'next/navigation';
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+  const [isLoggedIn , setIsLoggedIn] = useState(false);
+  const { findUser , logOut} = useContext((MyContext))
+  const {disconnect} = useDisconnect()
+  const router = useRouter();
+  useEffect(()=>{
+    const user = async() => {
+      const res = await findUser()
+      if(res) {setIsLoggedIn(true)}
+      else setIsLoggedIn(false);
+      }
+      user();
+  })
 
-  // Ensure the component only renders on the client
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
+  const logOutHanlder = async() => {
+    await logOut()
+    setIsLoggedIn(false);
+    disconnect();
+    router.push('/');
   }
-
   return (
     <div className="bg-[#6581A6] p-4 md:p-6 flex flex-wrap justify-between items-center">
       {/* Logo Section */}
@@ -77,9 +88,11 @@ const Navbar: React.FC = () => {
       )}
 
       <div className="flex items-center space-x-2 md:space-x-4 relative top-[-5px] md:top-[-15px]">
-        <Link href="/login" className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">
-          SignUp
-        </Link>
+        {
+          isLoggedIn ? (<button onClick={()=>{logOutHanlder()}} className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">SignOut</button>) : (<Link href="/login" className="text-[#BDD9F2] hover:text-gray-300 font-['Hammersmith_One'] text-[18px] md:text-[20px]">
+          SignIn
+        </Link>)
+        }
         <MyDropdown />
       </div>
     </div>

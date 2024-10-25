@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from 'firebase/firestore';
 import { getAuth } from "firebase/auth";
-import {getDatabase, ref, set, get} from 'firebase/database';
+import {getDatabase} from 'firebase/database';
+import {getStorage} from "firebase/storage"
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
@@ -21,3 +22,4 @@ export const database = getDatabase(app);
 export const getConversationId = (uid1: string, uid2: string): string => {
   return uid1 < uid2 ? `${uid1}_${uid2}` : `${uid2}_${uid1}`;
 };
+export const storage = getStorage(app)

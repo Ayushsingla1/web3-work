@@ -1,8 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    images: {
-        domains: ['img.freepik.com', 'as2.ftcdn.net'],
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '**', 
       },
+    ],
+  },
 };
 
 export default nextConfig;

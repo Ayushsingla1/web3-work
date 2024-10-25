@@ -7,6 +7,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { profile} from "@/RecoilStore/store";
 import { useRecoilState } from "recoil";
+import './loader.css'
 
 const ProfilePage = () => {
     const { findUser, getProfile } = useContext(MyContext);
@@ -21,10 +22,10 @@ const ProfilePage = () => {
             if (res === null) {
                 router.push('/');
             } else {
-                const user = await getProfile(res);
-                console.log(user)
-                console.log(user.id)
-                setData(user);
+                const user = await getProfile(res.email);
+                // console.log(user)
+                // console.log(user.id)
+                setData(user.data());
                 setIsAuthenticated(true);
             }
             setIsLoading(false);
@@ -33,7 +34,9 @@ const ProfilePage = () => {
     }, [findUser, getProfile, router, setData]);
 
     if (isLoading || !isAuthenticated) {
-        return <div>loading...</div>;
+        return <div className="w-screen h-screen flex justify-center items-center bg-[#1D2C40]">
+            <div className = "loader"></div>
+        </div>
     }
 
     return (
@@ -64,7 +67,7 @@ const ProfilePage = () => {
                                     <Link href={data?.resume}>
                                         <Image src='/images/resume.svg' alt="Resume" width={40} height={40} />
                                     </Link>
-                                    <div className="text-2xl text-[#BDD9F2] font-semibold">Resume</div>
+                                    <Link href = {data?.resume} className="text-2xl text-[#BDD9F2] font-semibold">Resume</Link>
                                 </div>
                                 <div className="flex text-xl font-semibold text-[#8BADD9] text-justify">{data?.description || 'No description available.'}</div>
                             </div>

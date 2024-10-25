@@ -14,7 +14,7 @@ interface workProfile {
     description : string,
     amount : number,
     skills : string[],
-    photoUrl : ""
+    photoUrl : string
 }
 
 export const profile = atom({
@@ -41,7 +41,7 @@ export const postCreation = atom({
         description : "",
         amount : 0,
         skills : [],
-        photoUrl : ""
+        photoUrl : "",
     } as workProfile
 })
 

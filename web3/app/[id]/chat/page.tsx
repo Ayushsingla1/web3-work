@@ -5,16 +5,16 @@ import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react"
 import React from "react";
 import { getConversationId, database } from "@/app/firebase";
-import { ref, onValue, onChildAdded, DataSnapshot, push } from "firebase/database";
+import { ref, onChildAdded, DataSnapshot, push } from "firebase/database";
 import DeployContractDropDown from "./DeployContractDropDown";
-// import { useWriteContract, useWaitForTransactionReceipt } from "wagmi";
 import { useAccount } from "wagmi";
 import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
 import { useEthersSigner } from "@/contracts/providerChange";
-import { getFirestore, doc, setDoc } from "firebase/firestore"; // Import Firestore functions
+import { doc, setDoc, getDoc } from "firebase/firestore";
+import { db } from "@/app/firebase";
 
 interface UserProfile {
-    id: string; // Add this line
+    id: string; 
     name: string,
     description: string,
     resume: string,
@@ -26,17 +26,17 @@ interface UserProfile {
   
 interface Message{
     id: string;
-    text:String
+    text: string
     senderId: string;
     timestamp: string;
 }
-interface ChatProps{
-    user: UserProfile;
-    myUser: UserProfile;
-    conversationId: string;
-    messages: Message[];
-}
-export default function User({ params }: { params: { username: string } }) {
+// interface ChatProps{
+//     user: UserProfile;
+//     myUser: UserProfile;
+//     conversationId: string;
+//     messages: Message[];
+// }
+export default function User({ params }: { params: { id: string } }) {
     const [user, setUser] = useState<UserProfile>({
         id: "",
         name: "",
@@ -51,11 +51,11 @@ export default function User({ params }: { params: { username: string } }) {
     const connectedAccount = useAccount();
     const signer = useEthersSigner({chainId: connectedAccount.chainId});
     const router = useRouter();
-    const userName = params.username.split("_").join(" ");
+    const id = params.id;
     const [myUser, setMyUser] = useState<UserProfile>();
     // const [myUser, setMyUser] = useRecoilState(profile);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const {findUser, getProfile, getProfileByUsername, showContractDropDown} = useContext(MyContext);
+    const [, setIsAuthenticated] = useState(false);
+    const {findUser, getProfile, showContractDropDown,getProfileById} = useContext(MyContext);
     const [messages, setMessages] = useState<Message[]>([]);
     const [message, setMessage] = useState("");
     const messagesEndRef= useRef<HTMLDivElement>(null);
@@ -63,31 +63,42 @@ export default function User({ params }: { params: { username: string } }) {
         let unsubscribe: (() => void) | undefined;
 
         const setupListener = async () => {
-            const res = await getProfileByUsername(userName);
+            const res = await getProfileById(id);
             setUser(res);
             const userRes = await findUser();
+            console.log("printing myself")
+            console.log(userRes.email)
             if (userRes === null) {
                 router.push('/');
             } else {
-                const myProfile = await getProfile(userRes);
+                const myProfile = await getProfile(userRes.email);
                 setMyUser(myProfile);
+
+                console.log("printing my profile")
+                console.log(myProfile)
                 setIsAuthenticated(true);
-                const conversationId = getConversationId(myProfile.id, res.id);
+                const conversationId = getConversationId(myProfile.id,res.id);
                 const messagesRef = ref(database, `messages/${conversationId}`);
-                
-                // Ensure myUser and user are defined before proceeding
-                if (myProfile && res) {
+
+
+                 // Ensure myUser and user are defined before proceeding
+                 if (myProfile && res) {
                     // Add data to Firestore
-                    const firestore = getFirestore();
-                    const docRef = doc(firestore, "conversations", conversationId);
-                    await setDoc(docRef, {
-                        client: myProfile.id || "unknown", // Fallback to "unknown" if undefined
-                        freelancer: res.id || "unknown",   // Fallback to "unknown" if undefined
-                        contractAddress: "",
-                        id: conversationId
-                    });
+                    console.log("res is : " , res.id);
+                    const docRef = doc(db, "conversations", conversationId);
+                    const alreadyExists = await getDoc(docRef);
+                    // console.log("chatbox is ; " , res)
+                    if(!alreadyExists){
+                        await setDoc(docRef, {
+                            client: myProfile.id || "unknown", // Fallback to "unknown" if undefined
+                            freelancer: res.id || "unknown",   // Fallback to "unknown" if undefined
+                            contractAddress: "",
+                            id: conversationId
+                        });
+                    }
                 }
 
+                
                 // Clear messages and set up listener
                 setMessages([]); // Clear messages before setting up the listener
                 console.log("Setting up listener for conversationId:", conversationId);
@@ -118,7 +129,7 @@ export default function User({ params }: { params: { username: string } }) {
                 unsubscribe();
             }
         };
-    }, [userName, findUser, getProfile, router]);
+    }, [id, findUser, getProfile, router,getProfileById]);
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
@@ -144,9 +155,8 @@ export default function User({ params }: { params: { username: string } }) {
     
     const deployContractHandeler = () => {
         console.log('clicked deploy btn')
-        const address = deployEscrow(connectedAccount, signer, '0x567A027B2f96bbf8D47c133e13A54862D565bcd6', 0.002)
+        const address = deployEscrow(connectedAccount, signer, '0x567A027B2f96bbf8D47c133e13A54862D565bcd6', 0.002).then((add) => {alert(`contract deployed at adderss: ${add}`);})
         setEscrowAdress(address);
-        alert(`contract deployed at adderss: ${address}`);
     }
      
     return (
@@ -190,7 +200,7 @@ export default function User({ params }: { params: { username: string } }) {
                             <div className="flex flex-col gap-y-2">
                                 <div className="flex flex-col w-full">
                                     <label htmlFor="freePubKey" className="text-sm text-white font-['Hammersmith_One']">
-                                        freelancer's Public Address
+                                        freelancer&apos;s Public Address
                                     </label>
                                     <input type="text" id="freePubKey" placeholder="0xHOS8w93jdJw0..." className="text-sm hover:bg-[#4f6f9a] text-white placeholder:text-white bg-[#6581A6] rounded-lg px-1 py-1"/>
                                 </div>
