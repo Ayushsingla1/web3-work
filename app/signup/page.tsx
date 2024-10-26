@@ -59,12 +59,17 @@ export default function SignUp(): React.ReactNode {
 
   const submitHandler = async (e: any) => {
     e.preventDefault();
-    try {
-      await CreateUserWithEmail(details.email, details.password);
-      toast.success("Account Created Successfully");
-      router.push("/");
-    } catch {
-      toast.error("Unable to Create Account");
+    if(details.email.length === 0 || details.password.length === 0){
+      toast.error("Please Enter valid Credentials");
+    }
+    else{
+      try {
+        await CreateUserWithEmail(details.email, details.password);
+        toast.success("Account Created Successfully");
+        router.push("/");
+      } catch {
+        toast.error("Unable to Create Account");
+      }
     }
   };
 

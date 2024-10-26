@@ -1,4 +1,8 @@
+'use client'
 import React from 'react';
+import { MyContext } from '@/components/Context';
+import { useContext } from 'react';
+import toast from 'react-hot-toast';
 
 interface WorkProfile {
   title : string,
@@ -11,12 +15,28 @@ interface WorkProfile {
   description : string,
   amount : number,
   skills : string[],
-  photoUrl : ""
+  id : string,
+  applicants : string[],
+  userId : string
 }
+
 
 const postedDate = '12/10/2024'
 
-const JobCard: React.FC<WorkProfile> = ({ title, description, skills }) => {
+const JobCard: React.FC<WorkProfile> = ({ title, description, skills , id , applicants , userId}) => {
+
+  const submitHandler = async(e : React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    try{
+      applicants.push(userId);
+      await applyJobs(id,applicants)
+      toast.success('Successfully Applied')
+    }
+    catch{
+      console.log("Error occured while applying for job")
+    }
+  }
+  const {applyJobs} = useContext(MyContext)
   return (
     <div className="bg-transparent rounded-lg p-6 w-full xl:w-[49%] min-h-[360px] border-[#BDD9F2] border-[0.5px] flex flex-col h-full">
       <div className="flex-grow">
@@ -39,7 +59,7 @@ const JobCard: React.FC<WorkProfile> = ({ title, description, skills }) => {
         </div>
       </div>
       
-      <button className="w-full bg-[#3D5473] hover:bg-[#4D6483] text-[#BDD9F2] font-bold py-2 px-4 rounded font-['Hammersmith_One']">
+      <button onClick={(e)=>(submitHandler(e))} className="w-full bg-[#3D5473] hover:bg-[#4D6483] text-[#BDD9F2] font-bold py-2 px-4 rounded font-['Hammersmith_One']" >
         Apply
       </button>
     </div>
