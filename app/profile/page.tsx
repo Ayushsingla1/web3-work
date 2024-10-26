@@ -83,7 +83,7 @@ const ProfilePage = () => {
                             )) || <div className="text-[#BDD9F2]">No skills listed.</div>}
                         </div>
                     </div>
-            <button onClick={()=>router.push('/profile_creation')} className=" w-56 h-10 py-1 rounded-sm text-[#1D2C40] text-2xl font-bold bg-[#BDD9F2]">Update Profile</button>
+            q       <button onClick={()=>router.push('/profile_creation')} className=" w-56 h-10 py-1 rounded-sm text-[#1D2C40] text-2xl font-bold bg-[#BDD9F2]">Update Profile</button>
                 </div>
             </div>
         </div>

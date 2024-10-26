@@ -1,11 +1,11 @@
 import { MyContext } from "@/components/Context";
 import { clientApproval, freelancerApproval } from "@/contracts/EscrowMethods/methods";
 import { useEthersSigner } from "@/contracts/providerChange";
-import React, { useContext, useEffect } from "react";
+import React, { useContext} from "react";
 import { useAccount } from "wagmi";
 
 
-const ApprovalBtn = ({approvalProps, escrowAddress}:any) => {
+const ApprovalBtn = ({approvalProps, contractAddress, clientAdd}:any) => {
 
 
     const address = approvalProps.contractAddress;
@@ -21,9 +21,6 @@ const ApprovalBtn = ({approvalProps, escrowAddress}:any) => {
         return myProfile;
     }
 
-    useEffect(() => {
-       
-    }, [])
 
     const approve = async () => {
         console.log("approving");
@@ -33,19 +30,27 @@ const ApprovalBtn = ({approvalProps, escrowAddress}:any) => {
         if(approvalProps.client === myId){
             //client approval logic
             console.log("signer", signer)
-            console.log("address:", tempAddress)
-            const res = await clientApproval(tempAddress, signer);
-            res ? console.log('approved') : console.log("not approved");
+            console.log("address:", contractAddress)
+            const res = contractAddress !== "" ? await clientApproval(contractAddress, signer) : await clientApproval(tempAddress, signer)
+            if(res){
+                console.log('approved') ;
+            }else{
+                console.log("not approved");
+            }
         }else{
             //freelancer approval logic
             console.log("hi I am a freelancer")
-            const res = await freelancerApproval(tempAddress, signer);
-            res ? console.log('approved') : console.log("not approved");
+            const res = contractAddress !== "" ? await freelancerApproval(contractAddress, signer) : await freelancerApproval(tempAddress, signer)
+            if(res){
+                console.log('approved') ;
+            }else{
+                console.log("not approved");
+            }
         }
     }
 
     return ( 
-        <button className={`${address !== "" ? "hidden" : "block"} ${connectedAccount ? "block" : "hidden"} text-lg px-2 py-1 bg-[#6581A6] rounded-lg hover:bg-[#4f6f9a] active:bg-[#304969]`} onClick={approve}>
+        <button className={`${(address !== "" || !clientAdd)? "hidden" : "block"} text-lg px-2 py-1 bg-[#6581A6] rounded-lg hover:bg-[#4f6f9a] active:bg-[#304969]`} onClick={approve}>
             Approve
         </button>
      );

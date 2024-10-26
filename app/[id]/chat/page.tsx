@@ -98,7 +98,6 @@ export default function User({ params }: { params: { id: string } }) {
                         });
                     }else{
                         setExistingConversation(alreadyExists);
-                        // console.log(alreadyExists)
                     }
                 }
 
@@ -133,7 +132,8 @@ export default function User({ params }: { params: { id: string } }) {
                 unsubscribe();
             }
         };
-    }, [id, findUser, getProfile, router,getProfileById]);
+    }, [id, findUser, getProfile, router,getProfileById, setExistingConversation]);
+
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
@@ -174,7 +174,7 @@ export default function User({ params }: { params: { id: string } }) {
                 <div className="px-40 mt-10 w-full flex flex-col gap-y-3">
                     <div className="flex justify-between items-center w-full py-2">
                         <div className="text-3xl text-[#8BADD9] font-semibold">Chat with {user?.name || 'User'}</div>
-                        <ApprovalBtn approvalProps={existingConversation} contractAddress={escrowAddress}/>
+                        <ApprovalBtn approvalProps={existingConversation} contractAddress={escrowAddress} clientAdd={connectedAccount.address}/>
                     </div>
                     <div className="chat-container relative border-[0.5px] border-white rounded-[7px] p-5 flex min-h-[60vh] flex-col gap-y-4">
 
