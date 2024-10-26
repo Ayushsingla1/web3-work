@@ -7,7 +7,7 @@ export interface freelancerProfile {
     skills : string[],
     work : string[],
     image : string,
-    id : string
+    id : string,
 }
 
 export interface conversationObjectType {
@@ -23,6 +23,7 @@ interface userProfile {
     resume : string,
     skills : string[],
     work : string[],
+    image : string
 }
 
 interface workProfile {
@@ -30,7 +31,6 @@ interface workProfile {
     description : string,
     amount : number,
     skills : string[],
-    photoUrl : string
 }
 
 export const profile = atom({
@@ -46,7 +46,8 @@ export const profileCreation = atom({
         description : "",
         resume : "",
         skills : [],
-        work : []
+        work : [],
+        image : ""
     } as userProfile
 })
 
@@ -57,7 +58,6 @@ export const postCreation = atom({
         description : "",
         amount : 0,
         skills : [],
-        photoUrl : "",
     } as workProfile
 })
 
