@@ -1,16 +1,17 @@
 "use client"
 import { createConfig, WagmiProvider , http } from "wagmi";
-import { mainnet , sepolia } from "wagmi/chains";
+import { mainnet , sepolia, polygonAmoy } from "wagmi/chains";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 export const config = createConfig({
-    chains : [mainnet,sepolia],
+    chains : [mainnet,sepolia, polygonAmoy],
     connectors : [
     ],
     transports : {
         [mainnet.id] : http(),
-        [sepolia.id] : http()
+        [sepolia.id] : http(),
+        [polygonAmoy.id] : http()
     }
 })
 

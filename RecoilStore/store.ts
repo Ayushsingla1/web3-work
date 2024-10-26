@@ -10,6 +10,13 @@ export interface freelancerProfile {
     id : string,
 }
 
+export interface conversationObjectType {
+    client: string,
+    freelancer: string,
+    contractAddress?: string,
+    id: string
+}
+
 interface userProfile {
     name : string,
     description : string,
@@ -72,4 +79,14 @@ export const freelancersArray = atom({
 export const skillToSearch = atom({
     key: "skillToSearch",
     default: [] as string[]
+})
+
+export const deployedEscrowAddress = atom({
+    key: "deployedEscrowAddress",
+    default: "" as string | undefined
+})
+
+export const conversationObject = atom({
+    key: "conversationObject",
+    default: {} as any
 })

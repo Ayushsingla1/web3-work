@@ -45,12 +45,15 @@ export const clientApproval = async (contractAddress: string, signer: any) => {
      await clientApprovalCall.wait()
      console.log(clientApprovalCall)
      console.log('client has approved!!');
+     return true;
     } catch (error) {
       console.log('error while approving by client', error)
+      return false;
     }
   } 
   else{
     alert("conract not loaded yet. Connect to wallet first");
+    return false;
   }
 }
 
@@ -62,12 +65,15 @@ export const freelancerApproval = async(contractAddress:string, signer:any) => {
      await freelancerApprovalCall.wait()
      console.log(freelancerApprovalCall)
      console.log('freelancer has approved!!');
+     return true;
     } catch (error) {
       console.log('error while approving by client', error)
+      return false;
     }
   } 
   else{
     alert("conract not loaded yet. Connect to wallet first");
+    return false;
   }
 
 }
