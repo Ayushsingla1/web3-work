@@ -12,6 +12,10 @@ import { deployEscrow } from "../../../contracts/EscrowMethods/deploy";
 import { useEthersSigner } from "@/contracts/providerChange";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
+import { useRecoilState } from "recoil";
+import { conversationObject, deployedEscrowAddress } from "@/RecoilStore/store";
+import ApprovalBtn from "@/app/components/ApprovalBtn";
+import Footer from "@/app/components/Footer";
 
 interface UserProfile {
     id: string; 
@@ -30,12 +34,7 @@ interface Message{
     senderId: string;
     timestamp: string;
 }
-// interface ChatProps{
-//     user: UserProfile;
-//     myUser: UserProfile;
-//     conversationId: string;
-//     messages: Message[];
-// }
+
 export default function User({ params }: { params: { id: string } }) {
     const [user, setUser] = useState<UserProfile>({
         id: "",
@@ -47,7 +46,9 @@ export default function User({ params }: { params: { id: string } }) {
         image : "",
         isAvailable: false
       })
-    const {setEscrowAdress} = useContext(MyContext);
+    // let alreadyExists = null
+    const [escrowAddress, setEscrowAdress] = useRecoilState(deployedEscrowAddress);
+    const [existingConversation, setExistingConversation] = useRecoilState(conversationObject);
     const connectedAccount = useAccount();
     const signer = useEthersSigner({chainId: connectedAccount.chainId});
     const router = useRouter();
@@ -86,7 +87,7 @@ export default function User({ params }: { params: { id: string } }) {
                     // Add data to Firestore
                     console.log("res is : " , res.id);
                     const docRef = doc(db, "conversations", conversationId);
-                    const alreadyExists = await getDoc(docRef);
+                    const alreadyExists = (await getDoc(docRef)).data();
                     // console.log("chatbox is ; " , res)
                     if(!alreadyExists){
                         await setDoc(docRef, {
@@ -95,6 +96,9 @@ export default function User({ params }: { params: { id: string } }) {
                             contractAddress: "",
                             id: conversationId
                         });
+                    }else{
+                        setExistingConversation(alreadyExists);
+                        // console.log(alreadyExists)
                     }
                 }
 
@@ -153,18 +157,25 @@ export default function User({ params }: { params: { id: string } }) {
         }
     };
     
-    const deployContractHandeler = () => {
+    const deployContractHandeler = async () => {
         console.log('clicked deploy btn')
-        const address = deployEscrow(connectedAccount, signer, '0x567A027B2f96bbf8D47c133e13A54862D565bcd6', 0.002).then((add) => {alert(`contract deployed at adderss: ${add}`);})
-        setEscrowAdress(address);
+        const freelancerAddress = (document.getElementById('freelancerAddress') as HTMLInputElement).value || "0x567A027B2f96bbf8D47c133e13A54862D565bcd6";
+        const amount = parseFloat((document.getElementById('amount') as HTMLInputElement).value) || 0.002;
+        const address = await deployEscrow(connectedAccount, signer, freelancerAddress, amount)
+        alert(`contract deployed at adderss: ${address}`) 
+        setEscrowAdress(address)
     }
      
+
     return (
-        <div className="bg-[#1D2C40] flex min-h-screen gap-y-10 flex-col h-screen w-screen overflow-hidden">
+        <div className="bg-[#1D2C40] flex min-h-screen gap-y-10 flex-col justify-between h-screen w-screen overflow-hidden">
             <Navbar />
             <div className="flex flex-col w-10/12 place-self-center justify-center items-center max-w-[1535px] text-xl">
                 <div className="px-40 mt-10 w-full flex flex-col gap-y-3">
-                    <div className="text-3xl text-[#8BADD9] font-semibold">Chat with {user?.name || 'User'}</div>
+                    <div className="flex justify-between items-center w-full py-2">
+                        <div className="text-3xl text-[#8BADD9] font-semibold">Chat with {user?.name || 'User'}</div>
+                        <ApprovalBtn approvalProps={existingConversation} contractAddress={escrowAddress}/>
+                    </div>
                     <div className="chat-container relative border-[0.5px] border-white rounded-[7px] p-5 flex min-h-[60vh] flex-col gap-y-4">
 
                         {/* chat area */}
@@ -199,10 +210,10 @@ export default function User({ params }: { params: { id: string } }) {
                         <div className={`absolute top-[70px] min-w-[205px] ${!showContractDropDown? 'hidden':'block'} p-2 bg-[#3D5473] rounded-lg border-[0.5px] border-white right-[20px]`}>
                             <div className="flex flex-col gap-y-2">
                                 <div className="flex flex-col w-full">
-                                    <label htmlFor="freePubKey" className="text-sm text-white font-['Hammersmith_One']">
+                                    <label htmlFor="freelancerAddress" className="text-sm text-white font-['Hammersmith_One']">
                                         freelancer&apos;s Public Address
                                     </label>
-                                    <input type="text" id="freePubKey" placeholder="0xHOS8w93jdJw0..." className="text-sm hover:bg-[#4f6f9a] text-white placeholder:text-white bg-[#6581A6] rounded-lg px-1 py-1"/>
+                                    <input type="text" id="freelancerAddress" placeholder="0xHOS8w93jdJw0..." className="text-sm hover:bg-[#4f6f9a] text-white placeholder:text-white bg-[#6581A6] rounded-lg px-1 py-1"/>
                                 </div>
                                 <div className="flex flex-col w-full">
                                     <label htmlFor="amount" className="text-sm text-white font-['Hammersmith_One']">
@@ -216,6 +227,7 @@ export default function User({ params }: { params: { id: string } }) {
                     </div>
                 </div>
             </div>
+            <Footer/>
         </div>
     )
   }
