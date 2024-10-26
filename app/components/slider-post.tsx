@@ -41,13 +41,10 @@ const PostSlider = () => {
 
     const changeHandler = (e : React.ChangeEvent<HTMLInputElement>) => {
         const {name} = e.target
-        let value : string | string[] | File = e.target.value;
+        let value : string | string[] = e.target.value;
         console.log("name is : ",name , "value is : ",value)
         if(name === "skills"){
             value = value.trim().split(',');
-        }
-        if(name === "photoUrl" && e.target.files){
-            value = e.target.files[0];
         }
         setPostData((prev) => (
             {
@@ -66,7 +63,8 @@ const PostSlider = () => {
             const res = await createPost({...postData,postDate : `${date.getDate()}/${date.getMonth()+1}/${date.getFullYear()}`, uid : userData.id, name : userData.name, email : userData.email });
             console.log(res)
             toast.success("Posted Successfully")
-            // router.push('/jobs')
+            setval(0);
+            router.push('/jobs')
         }
         catch(e){
             console.log(e)
@@ -119,26 +117,10 @@ const PostSlider = () => {
             <div className="text-[#1D2C40] font-semibold opacity-80">Specify the basic skill the freelancer might need for 
             applying to the job.</div>
             <div className="flex self-end mt-10 px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md items-center">
-            {/* <button onClick={(e)=> submitHandler(e)} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Submit</button>  */}
-            <div className="flex self-end mt-10 px-3 py-1  font-bold text-black rounded-md items-center gap-x-2">
-            <button onClick={()=>PrevClickHandler()} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Prev</button>
-            <button onClick={()=>{{NextClickHandler()}}} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Next</button>
-            </div>
-            </div>
-        </div>
-    }
-    else if(val === 4){
-        return <div className="bg-[#8BADD9] flex flex-col gap-y-2 w-[50%] h-[40%] px-20 py-20 rounded-md">
-            <div className="text-black font-semibold text-2xl">Basic Skills required for the job</div>
-            <input type = "file" placeholder="Uplaod A Image" name = "photoUrl" onChange={(e)=>changeHandler(e)} className="bg-[#BDD9F2] px-2 py-1 rounded-md text-black"></input>
-            <div className="text-[#1D2C40] font-semibold opacity-80">Specify the basic skill the freelancer might need for 
-            applying to the job.</div>
-            <div className="flex self-end mt-10 px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md items-center">
             <button onClick={(e)=> submitHandler(e)} className="px-3 py-1 bg-[#BDD9F2] font-bold text-black rounded-md">Submit</button> 
             </div>
         </div>
     }
-
 }
 
 export default PostSlider;

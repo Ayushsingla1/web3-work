@@ -5,31 +5,48 @@ import JobCard from "./JobCard";
 import Footer from "../components/Footer";
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "@/components/Context";
+import { useRouter } from "next/navigation";
 
 interface WorkProfile {
   title : string,
   description : string,
   amount : number,
   skills : string[],
-  photoUrl : ""
+  id : string,
+  uid : string,
+  applicants : string[]
 }
 
 
 
 export default function Jobs() {
+  const [ userId, setUserId ] = useState("");
   const [posts, setPosts] = useState<WorkProfile[]>([{
     title : "",
     description : "",
     amount : 0,
     skills : [],
-    photoUrl : ""
+    id : "",
+    uid : "",
+    applicants : []
   }]);
 
-  const {getposts} = useContext(MyContext);
+  const {getposts , findUser} = useContext(MyContext);
+
+  const router = useRouter();
+
 
   useEffect(() => {
+    const User = async() => {
+      const res =  await findUser();
+      if(!res){
+        router.push('/login')
+      }
+      setUserId(res.uid)
+    }
+    User();
     getposts().then((res:WorkProfile[]) => {console.log(res);setPosts(res)})
-  }, [getposts])
+  }, [getposts,findUser,router])
 
 
   return (
@@ -57,16 +74,19 @@ export default function Jobs() {
           {/* <div className="mt-10 grid grid-cols-2 gap-4 justify-items-center"> */}
           <div className="mt-10 flex flex-wrap gap-4 justify-items-center">
             {posts?.map((post:WorkProfile, index:number) => {
-              console.log(post);
-              return <JobCard 
-              key={index}  
-              title={post.title}
-              description={post.description}
-              amount={post.amount}
-              skills={post.skills}
-              photoUrl={post.photoUrl}
-              />
-              // return <div key={index}></div>;
+              if( post.uid !== userId ){
+                console.log(post);
+                return <JobCard 
+                key={index}  
+                title={post.title}
+                description={post.description}
+                amount={post.amount}
+                skills={post.skills}
+                id = {post.id}
+                applicants = {post.applicants}
+                userId =  {userId}
+                />
+              }
             })}
           </div>
         </div>

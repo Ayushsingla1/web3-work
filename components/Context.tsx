@@ -49,6 +49,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
             return result.user;
           } catch (error) {
             console.error('Error during Google sign-in:', error);
+            throw error
           }
   }
 
@@ -94,6 +95,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
           return await signInWithEmailAndPassword(auth,email,password)
         } catch (e) {
           console.log(e)
+          throw e;
         }
   }
 
@@ -103,6 +105,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
           return await signInWithPopup(auth,provider)
         } catch (e) {
           console.log(e)
+          throw e;
         }
   }
 
@@ -126,10 +129,11 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
         return items;
         }catch(e){
           console.log(e)
+          throw e
         }
   }
 
-    const getProfileByUsername = async(username : string) => {
+  const getProfileByUsername = async(username : string) => {
       const ref = collection(db,'users');
       const q = query(ref,where('name','==',`${username}`))
       let items : any = "";
@@ -147,6 +151,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
       return items;
       }catch(e){
         console.log(e)
+        throw e;
       }
   }
 
@@ -157,24 +162,28 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
   }
 
   const updateProfile = async(id : string,user : any) => {
-        const ref = doc(db,"users",id)
+        const userRef = doc(db,"users",id)
+        console.log("user in contest is " , user)
         try{
-          await updateDoc(ref,user);
+          const imageRef = ref(storage,`${Date.now()}`)
+          const imageRes = await uploadBytes(imageRef,user.image);
+          const imageUrl = await getDownloadURL(ref(storage,`${imageRes.metadata.fullPath}`))
+          console.log(imageUrl)
+          user = {
+            ...user,
+            image : imageUrl
+          }
+          await updateDoc(userRef,user);
         }catch(e){
-          console.log(e);
+          throw e;
         }
         
   }
 
   const createPost = async (data : any) =>{ 
-    console.log(data.photoUrl)
     const postRef = collection(db,'posts')
     try{
-      const imageRef = ref(storage,`${Date.now()}`)
-      const imageRes = await uploadBytes(imageRef,data.photoUrl);
-      const imageUrl = await getDownloadURL(ref(storage,`${imageRes.metadata.fullPath}`))
-      console.log(imageUrl)
-      data.photoUrl = imageUrl;
+      data.applicants = [];
       console.log("data after being uploaded : ",data);
       const res = await addDoc(postRef,data);
       console.log("added doc id is : ", res.id)
@@ -183,6 +192,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
       console.log(res);
     }catch(e){
       console.log(e);
+      throw e;
     }
     console.log(data)
     console.log(db)
@@ -200,6 +210,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
       }
       catch(e){
         console.log(e);
+        throw e;
       }
   }
 
@@ -215,6 +226,7 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
       }
       catch(e){
         console.log(e);
+        throw e;
       }
   }
 
@@ -222,9 +234,23 @@ export const ContextProvider = ({children} : { children: React.ReactNode }) => {
       return await signOut(auth);
   }
 
-    return(
-        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername,getProfileById, showContractDropDown, setShowContractDropDown, escrowAddress, setEscrowAdress,logOut}}>
+  const applyJobs = async(id : string , applicants : string[]) => {
+
+    try {
+      const job = doc(db,"posts",id);
+      await updateDoc(job,{
+        applicants : applicants
+      })
+      console.log("Succesfully applied")
+    } catch (error) {
+      throw error
+
+    }
+  }
+
+  return(
+        <MyContext.Provider value={{googleAuth,findUser,createUserWithEmail,signInWithEmail,githubAuth , getProfile , updateProfile , createPost, getposts , getFreeLancers, getProfileByUsername,getProfileById, showContractDropDown, setShowContractDropDown, escrowAddress, setEscrowAdress,logOut,applyJobs}}>
             {children}
         </MyContext.Provider>
-    )
+  )
 }

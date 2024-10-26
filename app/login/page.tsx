@@ -53,13 +53,18 @@ export default function Login(): React.ReactNode {
 
   const submitHandler = async(e : React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    try{
-      await signInWithEmail(details.email,details.password);
-      toast.success("LoggedIn Successfully")
-      router.push('/profile')
+    if(details.email.length === 0 || details.password.length === 0){
+      toast.error("Please Enter valid Credentials");
     }
-    catch{
-      toast.error("Unable to logIn")
+    else{
+      try{
+        await signInWithEmail(details.email,details.password);
+        toast.success("LoggedIn Successfully")
+        router.push('/profile')
+      }
+      catch{
+        toast.error("Unable to logIn")
+      }
     }
   };
 
