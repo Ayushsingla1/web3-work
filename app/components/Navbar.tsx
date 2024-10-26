@@ -32,9 +32,10 @@ const Navbar: React.FC = () => {
     <div className="bg-[#6581A6] w-full p-4 md:p-6 flex flex-wrap justify-between items-center">
       {/* Logo Section */}
       <div className="text-3xl md:text-4xl relative top-[-5px] md:top-[-15px] px-2 py-1 rounded">
-        <span className="font-['Irish_Grover'] text-[#1D2C40]">Go</span>
+        {/* <span className="font-['Irish_Grover'] text-[#1D2C40]">Go</span>
         <span className="font-['Irish_Grover'] text-[#1D2C40]">Getter</span>
-        <span className="font-['Irish_Grover'] text-[#1D2C40]">.com</span>
+        <span className="font-['Irish_Grover'] text-[#1D2C40]">.com</span> */}
+        <p className="font-['Irish_Grover'] text-[#1D2C40]">CRYPTOLANCER</p>
       </div>
 
       {/* Desktop Links */}
