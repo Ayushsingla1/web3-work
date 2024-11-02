@@ -1,5 +1,5 @@
 import { selector } from "recoil";
-import { freelancersArray, skillToSearch } from "./store";
+import { freelancersArray, jobsArray, skillsInJobs, skillToSearch, WorkProfileNew } from "./store";
 import { freelancerProfile } from "./store";
 
 export const searchFilterFreelancers = selector({
@@ -13,5 +13,19 @@ export const searchFilterFreelancers = selector({
         ))
         console.log(filteredFreelancers)
         return filteredFreelancers;
+    }
+})
+
+export const searchInJobs = selector({
+    key: "searchInJobs",
+    get: ({get}) => {
+        const allJobs = get(jobsArray);
+        const skillArray = get(skillsInJobs);
+        if(allJobs?.length === 0 || skillArray.length === 0) return;
+        const filteredJobs = allJobs?.filter((job: WorkProfileNew) => (
+            skillArray.every(skill => job.skills.includes(skill))
+        ))
+        console.log(filteredJobs)
+        return filteredJobs;
     }
 })

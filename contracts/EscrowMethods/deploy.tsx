@@ -3,7 +3,6 @@ import { ContractFactory, parseEther } from 'ethers'
 import {abi, bytecode} from '../constants.json'
 
 export async function deployEscrow(clientAcc:any, signer: any, freelancerAddress: string, amount: number) {
-    console.log('deploying contract...')
     if(!clientAcc){
       alert('no wallet connected')
       return;
@@ -12,10 +11,7 @@ export async function deployEscrow(clientAcc:any, signer: any, freelancerAddress
         if(freelancerAddress.trim() == ""){
             alert('freelancer\'s address not detected')
         }
-
-
         const escrowContractFactory = new ContractFactory(abi, bytecode, signer)
-    
         console.log("deploying contract ...")
         const escrow = await escrowContractFactory.deploy(freelancerAddress, {value: parseEther(`${amount}`)})
         await escrow.waitForDeployment();

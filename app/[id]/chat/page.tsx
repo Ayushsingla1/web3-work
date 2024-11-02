@@ -159,6 +159,7 @@ export default function User({ params }: { params: { id: string } }) {
     
     const deployContractHandeler = async () => {
         console.log('clicked deploy btn')
+        console.log(signer)
         const freelancerAddress = (document.getElementById('freelancerAddress') as HTMLInputElement).value || "0x567A027B2f96bbf8D47c133e13A54862D565bcd6";
         const amount = parseFloat((document.getElementById('amount') as HTMLInputElement).value) || 0.002;
         const address = await deployEscrow(connectedAccount, signer, freelancerAddress, amount)
