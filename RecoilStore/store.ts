@@ -33,6 +33,16 @@ interface workProfile {
     skills : string[],
 }
 
+export interface WorkProfileNew {
+    title : string,
+    description : string,
+    amount : number,
+    skills : string[],
+    id : string,
+    uid : string,
+    applicants : string[]
+  }
+
 export const profile = atom({
     key : "profile",
     default : {} as any
@@ -79,6 +89,16 @@ export const freelancersArray = atom({
 export const skillToSearch = atom({
     key: "skillToSearch",
     default: [] as string[]
+})
+
+export const skillsInJobs = atom({
+    key: "skillToSearchInJobs",
+    default: [] as string[]
+})
+
+export const jobsArray = atom({
+    key: "jobsArray",
+    default: [] as WorkProfileNew[] | undefined
 })
 
 export const deployedEscrowAddress = atom({

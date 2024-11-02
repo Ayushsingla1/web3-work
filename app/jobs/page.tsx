@@ -1,40 +1,28 @@
 'use client'
-
+import React from "react";
 import Navbar from "../components/Navbar";
 import JobCard from "./JobCard";
 import Footer from "../components/Footer";
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "@/components/Context";
 import { useRouter } from "next/navigation";
-
-interface WorkProfile {
-  title : string,
-  description : string,
-  amount : number,
-  skills : string[],
-  id : string,
-  uid : string,
-  applicants : string[]
-}
+import { jobsArray, WorkProfileNew } from "@/RecoilStore/store";
+import { useRecoilState } from "recoil";
+import JobsFilter from "./JobsFilter";
+// import { searchInJobs } from "@/RecoilStore/fiters";
 
 
 
 export default function Jobs() {
   const [ userId, setUserId ] = useState("");
-  const [posts, setPosts] = useState<WorkProfile[]>([{
-    title : "",
-    description : "",
-    amount : 0,
-    skills : [],
-    id : "",
-    uid : "",
-    applicants : []
-  }]);
-
+  const [posts, setPosts] = useRecoilState(jobsArray)
+  // const filteredJobs = useRecoilValue(searchInJobs)
+  // const [allJobs, setAllJobs] = useState<WorkProfileNew[]>()
+  const [loading, setLoading] = useState<boolean>(true);
   const {getposts , findUser} = useContext(MyContext);
+  // const skillsToSearch = useRecoilValue(skillsInJobs)
 
   const router = useRouter();
-
 
   useEffect(() => {
     const User = async() => {
@@ -45,9 +33,24 @@ export default function Jobs() {
       setUserId(res.uid)
     }
     User();
-    getposts().then((res:WorkProfile[]) => {console.log(res);setPosts(res)})
-  }, [getposts,findUser,router])
+  }, [router, findUser])
 
+  useEffect(() => {
+    getposts().then((res:WorkProfileNew[]) => {
+      console.log(res);
+      setPosts(res);
+      setLoading(false)
+    })
+  }, [getposts,findUser, setPosts])
+
+  // useEffect(() => {
+  //   // if(!filteredJobs && allJobs?.length !== 0){
+  //   //   setPosts(allJobs);
+  //   //   return;
+  //   // }
+  //       console.log(filteredJobs);
+  //       setPosts(filteredJobs);
+  //   }, [filteredJobs]);
 
   return (
     <div className="min-h-screen" style={{ background: '#1D2C40' }}>
@@ -55,25 +58,10 @@ export default function Jobs() {
       <div className="w-full flex justify-center items-center px-4 pb-80">
         <div className="mt-8 w-10/12 max-w-[1535px] pb-80">
           <h1 className="font-bold mb-4 text-[#BDD9F2] font-['Hammersmith_One'] text-[50px]">Find a Job</h1>
-          <div className="flex space-x-2">
-            <input
-              type="text"
-              placeholder="Search by Skills"
-              className="w-2/3 p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 bg-transparent text-white"
-            />
-            <button className="bg-[#3D5473] px-4 py-2 rounded-md hover:bg-[#3D5473] focus:outline-none focus:ring-2 focus:ring-blue-500 text-[18px] font-['Hammersmith_One'] text-[#BDD9F2]">
-              See More
-            </button>
-          </div>
-          <button className="mt-2 bg-transparent px-4 py-2 rounded-full hover:bg-[#4D6483] focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center space-x-2 text-[#BDD9F2] font-['Hammersmith_One'] border border-[#BDD9F2]">
-            <span>React</span>
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+          <JobsFilter/>
           {/* <div className="mt-10 grid grid-cols-2 gap-4 justify-items-center"> */}
           <div className="mt-10 flex flex-wrap gap-4 justify-items-center">
-            {posts?.map((post:WorkProfile, index:number) => {
+            {posts? posts.map((post:WorkProfileNew, index:number) => {
               if( post.uid !== userId ){
                 console.log(post);
                 return <JobCard 
@@ -87,7 +75,16 @@ export default function Jobs() {
                 userId =  {userId}
                 />
               }
-            })}
+            }): 
+              (
+                <>
+                {
+                  loading? (<div className="w-full justify-center flex items-center text-white text-xl uppercase">Loading...</div>)
+                  : (<div className="w-full justify-center flex items-center text-white text-xl uppercase">No Freelancers found...</div>)
+                }
+                </>
+              )
+            }
           </div>
         </div>
       </div>
