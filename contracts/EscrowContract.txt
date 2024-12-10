@@ -1,0 +1,71 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.0;
+
+contract Escrow {
+    address public client;
+    address public freelancer;
+    uint256 public amount;
+    bool public clientApproval;
+    bool public freelancerApproval;
+
+    // Events
+    event Deposited(address indexed client, uint256 amount);
+    event ApprovedByClient(address indexed client);
+    event ApprovedByFreelancer(address indexed freelancer);
+    event FundsReleased(address indexed freelancer, uint256 amount);
+
+    // Modifier to ensure only the client can perform certain actions
+    modifier onlyClient() {
+        require(msg.sender == client, "Only the client can perform this action");
+        _;
+    }
+
+    // Modifier to ensure only the freelancer can perform certain actions
+    modifier onlyFreelancer() {
+        require(msg.sender == freelancer, "Only the freelancer can perform this action");
+        _;
+    }
+
+    // Constructor to initialize the contract with client and freelancer addresses
+    constructor(address _freelancer) payable {
+        client = msg.sender;
+        freelancer = _freelancer;
+        amount = msg.value;
+        emit Deposited(client, msg.value);
+    }
+
+    // Function for client to approve the job completion
+    function approveByClient() external onlyClient {
+        clientApproval = true;
+        emit ApprovedByClient(msg.sender);
+        releaseFundsIfApproved();
+    }
+
+    // Function for freelancer to approve the job completion
+    function approveByFreelancer() external onlyFreelancer {
+        freelancerApproval = true;
+        emit ApprovedByFreelancer(msg.sender);
+        releaseFundsIfApproved();
+    }
+
+    // Internal function to release funds if both parties have approved
+    function releaseFundsIfApproved() internal {
+        if (clientApproval && freelancerApproval) {
+            payable(freelancer).transfer(amount);
+            emit FundsReleased(freelancer, amount);
+        }
+    }
+
+    // In case something goes wrong, the client can cancel the contract and reclaim the funds
+    function cancelEscrow() external onlyClient {
+        require(!clientApproval || !freelancerApproval, "Cannot cancel after approval");
+        payable(client).transfer(amount);
+        resetApprovals();
+    }
+
+    // Internal function to reset approvals if escrow is canceled
+    function resetApprovals() internal {
+        clientApproval = false;
+        freelancerApproval = false;
+    }
+}

@@ -5,17 +5,31 @@ import { type Config, useConnectorClient } from 'wagmi'
 
 export function clientToSigner(client: Client<Transport, Chain, Account>) {
   const { account, chain, transport } = client
+  console.log(chain?.id)
   if(chain?.id === 11155111){
     const network = {
       chainId: chain.id,
       name: chain.name,
       ensAddress: chain.contracts?.ensRegistry?.address,
     }
-
+    
     console.log(network)
 
     const provider = new BrowserProvider(transport, network);
     const signer = new JsonRpcSigner(provider, account.address)
+    return signer
+  }
+  else if(chain?.id === 80002){
+    const network = {
+      chainId: 80002,
+      name: "Polygon Amoy Testnet",
+      // ensAddress: chain.contracts?.ensRegistry?.address,
+    }
+    console.log(network)
+    
+    const provider = new BrowserProvider(transport, network);
+    const signer = new JsonRpcSigner(provider, account.address)
+    console.log(signer)
     return signer
   }
   else if(chain?.id === 1320){
@@ -32,9 +46,9 @@ export function clientToSigner(client: Client<Transport, Chain, Account>) {
   }
   else{
     const network = {
-      chainId: 80002,
-      name: "Polygon Amoy Testnet",
-      ensAddress: chain.contracts?.ensRegistry?.address,
+      chainId: 5003,
+      name: "Mantle Sepolia Testnet",
+      // ensAddress: chain.contracts?.ensRegistry?.address,
     }
     console.log(network)
     

@@ -21,8 +21,7 @@ export const AIAtestnet = /*#__PURE__*/ defineChain({
 
 // export const AIAmainnet = /*#__PURE__*/ defineChain({
 //     id: 1_319,
-//     name: 'AIA Official Network',
-//     nativeCurrency: { name: 'AIA', symbol: 'AIA', decimals: 18 },
+//     nameveCurrency: { name: 'AIA', symbol: 'AIA', decimals: 18 },
 //     rpcUrls: {
 //       default: {
 //         http: ['https://aia-dataseed1-testnet.aiachain.org'],
@@ -37,4 +36,3 @@ export const AIAtestnet = /*#__PURE__*/ defineChain({
 //     },
 //     testnet: true,
 //   })
-  

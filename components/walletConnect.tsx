@@ -1,6 +1,6 @@
 "use client"
 import { createConfig, WagmiProvider , http } from "wagmi";
-import { mainnet , sepolia, polygonAmoy } from "wagmi/chains";
+import { mainnet , sepolia, polygonAmoy, mantleSepoliaTestnet } from "wagmi/chains";
 import React from "react";
 import { AIAtestnet } from "@/app/chainConfig";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -12,6 +12,7 @@ export const config = createConfig({
     transports : {
         [mainnet.id] : http(),
         [sepolia.id] : http(),
+        [mantleSepoliaTestnet.id] : http(),
         [polygonAmoy.id] : http(),
         [AIAtestnet.id] : http("https://aia-dataseed1-testnet.aiachain.org")
     }
