@@ -1,5 +1,5 @@
-import PostSlider from "../components/slider-post";
-import Navbar from "../components/Navbar";
+import PostSlider from "../../components/ui/slider-post";
+import Navbar from "../../components/ui/Navbar";
 const Profile = () => {
     return (
         <div className="bg-[#1D2C40] flex flex-col h-screen w-screen">

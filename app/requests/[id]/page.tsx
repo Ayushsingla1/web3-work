@@ -1,5 +1,5 @@
 "use client";
-import Navbar from "../../components/Navbar";
+import Navbar from "../../../components/ui/Navbar";
 import { useParams } from "next/navigation";
 import ApplicantCard from "./applicantCard";
 

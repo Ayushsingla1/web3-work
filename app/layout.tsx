@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import {ContextProvider} from "@/components/Context";
-import RecoilSetup from "./components/Recoil";
-import Wallet from "@/components/walletConnect";
+import RecoilSetup from "./RecoilProvider";
 import { Toaster } from "react-hot-toast";
+import { WalletContextProvider } from "./walletProvider";
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
   variable: "--font-geist-sans",
@@ -35,14 +35,16 @@ export default function RootLayout({
          <link href="https://fonts.googleapis.com/css2?family=Irish+Grover&family=Hammersmith+One&family=Inknut+Antiqua:wght@400;700&display=swap" rel="stylesheet"></link>
          <link href="https://fonts.googleapis.com/css2?family=Inknut+Antiqua&display=swap" rel="stylesheet"></link>
          
-         <Wallet>
-         <ContextProvider>
-          <RecoilSetup>
-            <Toaster position="top-right"/>
-          {children}
-          </RecoilSetup>
-          </ContextProvider> 
-         </Wallet>
+
+          <WalletContextProvider>
+            <ContextProvider>
+              <RecoilSetup>
+                <Toaster position="top-right"/>
+                {children}
+              </RecoilSetup>
+            </ContextProvider> 
+          </WalletContextProvider>
+
         
       </body>
     </html>

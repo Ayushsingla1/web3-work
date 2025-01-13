@@ -1,6 +1,6 @@
 'use client'
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
+import Navbar from "../../components/ui/Navbar";
+import Footer from "../../components/ui/Footer";
 import FreelancerCard from './FreeLancerCard'; 
 import FreelanceFilter from "./FreelancFilter";
 import { useContext, useEffect, useState } from "react";

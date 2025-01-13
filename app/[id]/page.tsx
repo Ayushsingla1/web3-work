@@ -1,6 +1,6 @@
 'use client'
 import { MyContext } from "@/components/Context"
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/ui/Navbar";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";

@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { MyContext } from "@/components/Context";
 import { useDisconnect } from "wagmi";
 import { useRouter } from "next/navigation";
+import { ConnectButton } from '@rainbow-me/rainbowkit';
 
 const Navbar: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -143,7 +144,8 @@ const Navbar: React.FC = () => {
             SignIn
           </Link>
         )}
-        <MyDropdown />
+        {/* <MyDropdown /> */}
+        <ConnectButton accountStatus="avatar"/>
       </div>
     </div>
   );

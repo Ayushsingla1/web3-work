@@ -1,8 +1,8 @@
 'use client'
 import React from "react";
-import Navbar from "../components/Navbar";
+import Navbar from "../../components/ui/Navbar";
 import JobCard from "./JobCard";
-import Footer from "../components/Footer";
+import Footer from "../../components/ui/Footer";
 import { useContext, useEffect, useState } from "react";
 import { MyContext } from "@/components/Context";
 import { useRouter } from "next/navigation";

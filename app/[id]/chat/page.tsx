@@ -1,6 +1,6 @@
 'use client'
 import { MyContext } from "@/components/Context"
-import Navbar from '../../components/Navbar'
+import Navbar from '../../../components/ui/Navbar'
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useRef, useState } from "react"
 import React from "react";
@@ -14,8 +14,8 @@ import { doc, setDoc, getDoc } from "firebase/firestore";
 import { db } from "@/app/firebase";
 import { useRecoilState } from "recoil";
 import { conversationObject, deployedEscrowAddress } from "@/RecoilStore/store";
-import ApprovalBtn from "@/app/components/ApprovalBtn";
-import Footer from "@/app/components/Footer";
+import ApprovalBtn from "@/components/ui/ApprovalBtn";
+import Footer from "@/components/ui/Footer";
 
 interface UserProfile {
     id: string; 
